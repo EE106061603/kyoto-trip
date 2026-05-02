@@ -179,22 +179,149 @@
     line-height: 1.7;
   }
 
-  .info-window {
-    font-family: 'Noto Sans TC', sans-serif;
-    max-width: 240px;
+  /* DETAIL PANEL */
+  .detail-panel {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 380px; max-width: 100%;
+    background: var(--paper);
+    border-left: 1px solid rgba(42, 37, 32, 0.12);
+    box-shadow: -8px 0 24px rgba(42, 37, 32, 0.08);
+    transform: translateX(calc(100% + 24px));
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+    z-index: 50;
+    overflow-y: auto;
+    display: flex; flex-direction: column;
   }
-  .info-window h4 {
+  .detail-panel.open { transform: translateX(0); }
+  .detail-panel::-webkit-scrollbar { width: 6px; }
+  .detail-panel::-webkit-scrollbar-thumb { background: rgba(42, 37, 32, 0.2); border-radius: 3px; }
+
+  .detail-photo {
+    width: 100%; height: 200px; object-fit: cover;
+    background: var(--paper-dark);
+    flex-shrink: 0; display: block;
+  }
+  .detail-photo-placeholder {
+    width: 100%; height: 80px;
+    background: linear-gradient(135deg, var(--paper-dark) 0%, var(--paper) 100%);
+    flex-shrink: 0;
+  }
+  .detail-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(42, 37, 32, 0.1);
+    cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 18px; color: var(--ink);
+    transition: all 0.15s;
+    box-shadow: 0 2px 6px rgba(42, 37, 32, 0.1);
+    z-index: 2;
+  }
+  .detail-close:hover { background: var(--vermillion); color: white; border-color: var(--vermillion); }
+
+  .detail-body { padding: 18px 22px 28px; flex: 1; }
+
+  .detail-trip-badge {
+    display: inline-flex; align-items: center; gap: 8px;
     font-family: 'Shippori Mincho', serif;
-    font-size: 14px; color: var(--ink);
-    margin-bottom: 4px;
+    font-size: 11px; letter-spacing: 3px;
+    color: var(--vermillion); font-weight: 600;
+    margin-bottom: 8px;
   }
-  .info-window .iw-time {
-    font-size: 11px; color: var(--vermillion);
-    font-weight: 600; margin-bottom: 6px;
+  .detail-trip-badge .day-dot {
+    display: inline-block; width: 14px; height: 14px;
+    border-radius: 50%; color: white;
+    font-size: 9px; font-weight: 700;
+    text-align: center; line-height: 14px;
+    letter-spacing: 0;
   }
-  .info-window p {
-    font-size: 12px; color: var(--ink-soft);
-    line-height: 1.5;
+
+  .detail-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--ink); line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .detail-rating {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .detail-rating .score {
+    color: var(--vermillion); font-weight: 700;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .detail-rating .stars { color: var(--gold); letter-spacing: 1px; }
+
+  .detail-tags {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .detail-actions {
+    display: flex; gap: 8px; margin-bottom: 20px;
+    overflow-x: auto;
+  }
+  .detail-actions::-webkit-scrollbar { height: 0; }
+  .detail-action {
+    flex-shrink: 0; padding: 8px 14px;
+    background: var(--paper-dark);
+    border: 1px solid rgba(42, 37, 32, 0.12);
+    border-radius: 18px;
+    color: var(--ink); text-decoration: none;
+    font-size: 12px; font-weight: 500;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .detail-action:hover {
+    background: var(--vermillion); color: white;
+    border-color: var(--vermillion);
+  }
+  .detail-action .ico { font-size: 13px; }
+
+  .detail-row {
+    display: grid; grid-template-columns: 24px 1fr;
+    gap: 10px; padding: 10px 0;
+    border-bottom: 1px dashed rgba(42, 37, 32, 0.1);
+    font-size: 13px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row .ico {
+    font-size: 14px; color: var(--vermillion);
+    line-height: 1.6;
+  }
+  .detail-row strong {
+    color: var(--ink); font-weight: 600;
+  }
+  .detail-row a { color: var(--indigo); text-decoration: none; word-break: break-all; }
+  .detail-row a:hover { color: var(--vermillion); text-decoration: underline; }
+
+  .detail-hours-list { list-style: none; padding: 0; margin: 4px 0 0; }
+  .detail-hours-list li {
+    display: flex; justify-content: space-between;
+    font-size: 12px; padding: 2px 0;
+  }
+  .detail-hours-list li.today { color: var(--vermillion); font-weight: 600; }
+
+  .detail-notes {
+    margin-top: 18px; padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border-left: 3px solid var(--vermillion);
+    border-radius: 2px;
+    font-family: 'Klee One', cursive;
+    font-size: 13px; color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .detail-notes strong { color: var(--ink); }
+
+  .detail-loading {
+    color: var(--ink-soft); font-size: 12px;
+    padding: 8px 0; opacity: 0.6;
   }
 
   /* MOBILE */
@@ -203,6 +330,7 @@
     .sidebar { border-right: none; border-bottom: 1px solid rgba(42, 37, 32, 0.1); }
     .topbar-title { font-size: 14px; }
     .topbar { gap: 8px; padding: 0 12px; }
+    .detail-panel { width: 100%; }
   }
 </style>
 </head>
@@ -233,6 +361,11 @@
       <div>地圖載入中…</div>
       <div class="err" id="mapErr" style="display:none;"></div>
     </div>
+    <aside class="detail-panel" id="detailPanel">
+      <button class="detail-close" id="detailClose" aria-label="關閉">×</button>
+      <div id="detailPhotoSlot"></div>
+      <div class="detail-body" id="detailBody"></div>
+    </aside>
   </div>
 </div>
 
@@ -240,7 +373,8 @@
 // ============ 資料：從 trips.json 載入 ============
 let TRIP = [];
 const stopRefs = []; // sidebar/marker 對應
-let map, infoWindow;
+let map;
+const placeCache = new Map(); // placeId → Place 物件 (避免重複請求)
 const polylines = [];
 let mapsApiReady = false;
 let dataReady = false;
@@ -254,12 +388,14 @@ function adaptStop(stop) {
   const firstTag = (stop.tags && stop.tags[0]) || { key: 'scenery', label: '' };
   return {
     time: stop.time,
-    title: (stop.star ? '★ ' : '') + stop.title,
+    title: stop.title,
+    star: !!stop.star,
+    tags: stop.tags || [],
     tag: firstTag.key,
     lat: stop.lat,
     lng: stop.lng,
     placeId: stop.placeId || null,
-    note: stop.notes || ''
+    notes: stop.notes || ''
   };
 }
 
@@ -299,7 +435,7 @@ function renderSidebar() {
       card.innerHTML = `
         <div class="stop-card-time">${stop.time}</div>
         <div>
-          <div class="stop-card-title">${stop.title}</div>
+          <div class="stop-card-title">${stop.star ? '★ ' : ''}${stop.title}</div>
           <span class="stop-card-tag tag-${stop.tag}">${tagLabel(stop.tag)}</span>
         </div>
       `;
@@ -339,12 +475,17 @@ function renderMap() {
     mapTypeControl: false,
     streetViewControl: false,
     fullscreenControl: true,
+    clickableIcons: false,
     styles: [
-      { featureType: "poi", elementType: "labels", stylers: [{ visibility: "simplified" }] },
-      { featureType: "transit.station", elementType: "labels", stylers: [{ visibility: "off" }] }
+      // 隱藏所有 Google 內建 POI 圖標跟文字（保留我們自己的 markers）
+      { featureType: "poi", stylers: [{ visibility: "off" }] },
+      // 保留公園、自然景觀的綠色底色當地理參考，但拿掉文字
+      { featureType: "poi.park", elementType: "geometry", stylers: [{ visibility: "on" }] },
+      { featureType: "landscape.natural", elementType: "geometry", stylers: [{ visibility: "on" }] },
+      // 隱藏交通站點圖示（保留 transit.line 讓鐵道線還看得到）
+      { featureType: "transit.station", stylers: [{ visibility: "off" }] }
     ]
   });
-  infoWindow = new google.maps.InfoWindow();
 
   stopRefs.forEach((ref, idx) => {
     const { stop, day } = ref;
@@ -417,17 +558,163 @@ function focusStop(idx) {
   ref.card.classList.add('active');
   lastActiveCard = ref.card;
   ref.card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  if (!map || !ref.marker) return;
-  map.panTo(ref.marker.getPosition());
-  if (map.getZoom() < 14) map.setZoom(15);
-  infoWindow.setContent(`
-    <div class="info-window">
-      <div class="iw-time">${ref.stop.time} · Day ${ref.day.day}</div>
-      <h4>${ref.stop.title}</h4>
-      ${ref.stop.note ? `<p>${ref.stop.note}</p>` : ''}
+  if (map && ref.marker) {
+    map.panTo(ref.marker.getPosition());
+    if (map.getZoom() < 14) map.setZoom(15);
+  }
+  openDetailPanel(ref);
+}
+
+// ============ 詳細資訊面板 ============
+const WEEKDAYS_JP = ['日','一','二','三','四','五','六'];
+const detailPanel = document.getElementById('detailPanel');
+const detailBody = document.getElementById('detailBody');
+const detailPhotoSlot = document.getElementById('detailPhotoSlot');
+document.getElementById('detailClose').addEventListener('click', closeDetailPanel);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDetailPanel(); });
+
+function closeDetailPanel() {
+  detailPanel.classList.remove('open');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+function renderTripBlock(ref) {
+  const { stop, day } = ref;
+  const tagsHtml = stop.tags.map(t => `<span class="stop-card-tag tag-${t.key}">${tagLabel(t.key)}${t.label && t.label !== tagLabel(t.key) ? ' · ' + escapeHtml(t.label) : ''}</span>`).join('');
+  return `
+    <div class="detail-trip-badge">
+      <span class="day-dot" style="background:${day.color}">${day.day}</span>
+      DAY ${day.day} · ${stop.time}
     </div>
-  `);
-  infoWindow.open({ map, anchor: ref.marker });
+    <div class="detail-title">${stop.star ? '★ ' : ''}${escapeHtml(stop.title)}</div>
+    <div class="detail-tags">${tagsHtml}</div>
+  `;
+}
+
+function renderActions(stop, place) {
+  const actions = [];
+  // Open in Google Maps
+  if (place && place.googleMapsURI) {
+    actions.push({ ico: '◉', label: '在 Maps 開啟', href: place.googleMapsURI });
+  } else if (stop.placeId) {
+    actions.push({ ico: '◉', label: '在 Maps 開啟', href: `https://www.google.com/maps/search/?api=1&query=${stop.lat},${stop.lng}&query_place_id=${stop.placeId}` });
+  } else if (stop.lat != null) {
+    actions.push({ ico: '◉', label: '在 Maps 開啟', href: `https://www.google.com/maps/search/?api=1&query=${stop.lat},${stop.lng}` });
+  }
+  // Directions
+  if (stop.placeId) {
+    actions.push({ ico: '↗', label: '路線', href: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(stop.title)}&destination_place_id=${stop.placeId}` });
+  } else if (stop.lat != null) {
+    actions.push({ ico: '↗', label: '路線', href: `https://www.google.com/maps/dir/?api=1&destination=${stop.lat},${stop.lng}` });
+  }
+  if (place) {
+    if (place.websiteURI) actions.push({ ico: '🌐', label: '網站', href: place.websiteURI });
+    if (place.internationalPhoneNumber) actions.push({ ico: '📞', label: '電話', href: `tel:${place.internationalPhoneNumber.replace(/\s/g, '')}` });
+  }
+  if (!actions.length) return '';
+  return `<div class="detail-actions">${actions.map(a =>
+    `<a class="detail-action" target="_blank" rel="noopener" href="${a.href}"><span class="ico">${a.ico}</span>${a.label}</a>`
+  ).join('')}</div>`;
+}
+
+function renderRating(place) {
+  if (!place || place.rating == null) return '';
+  const score = place.rating.toFixed(1);
+  const filled = Math.round(place.rating);
+  const stars = '★'.repeat(filled) + '☆'.repeat(5 - filled);
+  const reviews = place.userRatingCount ? ` (${place.userRatingCount.toLocaleString()})` : '';
+  return `<div class="detail-rating">
+    <span class="score">${score}</span>
+    <span class="stars">${stars}</span>
+    <span>${reviews}</span>
+  </div>`;
+}
+
+function renderPlaceInfo(place) {
+  if (!place) return '';
+  const rows = [];
+  if (place.formattedAddress) {
+    rows.push(`<div class="detail-row"><span class="ico">📍</span><div>${escapeHtml(place.formattedAddress)}</div></div>`);
+  }
+  if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) {
+    const today = new Date().getDay();
+    // Google 的 weekdayDescriptions 索引 0 = 週一，所以星期天要從 6 取
+    const todayIdx = today === 0 ? 6 : today - 1;
+    const hoursList = place.regularOpeningHours.weekdayDescriptions.map((line, i) =>
+      `<li class="${i === todayIdx ? 'today' : ''}">${escapeHtml(line)}</li>`
+    ).join('');
+    rows.push(`<div class="detail-row"><span class="ico">🕒</span><div><strong>營業時間</strong><ul class="detail-hours-list">${hoursList}</ul></div></div>`);
+  }
+  if (place.internationalPhoneNumber) {
+    rows.push(`<div class="detail-row"><span class="ico">📞</span><div><a href="tel:${place.internationalPhoneNumber.replace(/\s/g,'')}">${escapeHtml(place.internationalPhoneNumber)}</a></div></div>`);
+  }
+  if (place.websiteURI) {
+    rows.push(`<div class="detail-row"><span class="ico">🌐</span><div><a target="_blank" rel="noopener" href="${place.websiteURI}">${escapeHtml(place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a></div></div>`);
+  }
+  return rows.join('');
+}
+
+function renderNotes(stop) {
+  if (!stop.notes) return '';
+  return `<div class="detail-notes">${stop.notes}</div>`;
+}
+
+function renderPhoto(place) {
+  if (place && place.photos && place.photos.length) {
+    try {
+      const photoUrl = place.photos[0].getURI({ maxWidth: 800, maxHeight: 400 });
+      return `<img class="detail-photo" src="${photoUrl}" alt="" onerror="this.outerHTML='<div class=&quot;detail-photo-placeholder&quot;></div>'">`;
+    } catch (e) { /* fallthrough */ }
+  }
+  return `<div class="detail-photo-placeholder"></div>`;
+}
+
+async function openDetailPanel(ref) {
+  const { stop } = ref;
+  // 先用我們自己的資料畫一份（即時開啟，不卡）
+  detailPhotoSlot.innerHTML = `<div class="detail-photo-placeholder"></div>`;
+  detailBody.innerHTML = renderTripBlock(ref)
+    + renderActions(stop, null)
+    + (stop.placeId ? `<div class="detail-loading">載入 Place 詳細資料…</div>` : '')
+    + renderNotes(stop);
+  detailPanel.classList.add('open');
+  detailPanel.scrollTop = 0;
+
+  // 沒 placeId 的就只顯示我們自己的資料
+  if (!stop.placeId) return;
+
+  // Places API (New) 抓詳細
+  if (!window.google?.maps?.places?.Place) return;
+
+  try {
+    let place = placeCache.get(stop.placeId);
+    if (!place) {
+      place = new google.maps.places.Place({ id: stop.placeId });
+      await place.fetchFields({
+        fields: ['displayName', 'formattedAddress', 'rating', 'userRatingCount',
+                 'regularOpeningHours', 'websiteURI', 'internationalPhoneNumber',
+                 'photos', 'googleMapsURI']
+      });
+      placeCache.set(stop.placeId, place);
+    }
+    // 確認使用者沒有切到別張卡片才更新（避免 race）
+    if (!detailPanel.classList.contains('open')) return;
+    detailPhotoSlot.innerHTML = renderPhoto(place);
+    detailBody.innerHTML = renderTripBlock(ref)
+      + renderRating(place)
+      + renderActions(stop, place)
+      + renderPlaceInfo(place)
+      + renderNotes(stop);
+  } catch (err) {
+    console.error('Place fetch failed:', err);
+    detailBody.innerHTML = renderTripBlock(ref)
+      + renderActions(stop, null)
+      + `<div class="detail-row"><span class="ico">⚠️</span><div style="color:var(--vermillion);font-size:12px;">Place 詳細資料載入失敗：${escapeHtml(err.message || String(err))}</div></div>`
+      + renderNotes(stop);
+  }
 }
 
 function loadMapsApi() {
