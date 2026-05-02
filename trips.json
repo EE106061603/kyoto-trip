@@ -20,41 +20,11 @@
       "color": "#9d3329",
       "narrative": "早上從台中朝馬搭客運到桃園機場，下午搭機抵達關西，傍晚轉車到京都。當晚直接休息，準備隔天行程。",
       "stops": [
-        {
-          "time": "12:00",
-          "title": "統聯客運 朝馬站",
-          "tags": [{"key":"transit","label":"交通"}],
-          "notes": "出發！從台中朝馬搭往桃園機場。"
-        },
-        {
-          "time": "15:37",
-          "title": "桃園機場第一航廈",
-          "tags": [{"key":"transit","label":"機場"}],
-          "notes": "準備起飛去關西。記得列印登機證+查看登機門。",
-          "lat": 25.0793, "lng": 121.2342
-        },
-        {
-          "time": "18:27",
-          "title": "關西國際機場 KIX",
-          "featured": true,
-          "tags": [{"key":"transit","label":"機場"}],
-          "notes": "抵達關西！過海關、領行李、買 ICOCA 卡（建議）。搭 JR 關空特急 Haruka 或南海電鐵到大阪。",
-          "lat": 34.4347, "lng": 135.2444
-        },
-        {
-          "time": "20:08",
-          "title": "大阪車站 → 京都車站",
-          "tags": [{"key":"transit","label":"轉車"}],
-          "notes": "大阪→京都 JR 新快速約 28 分鐘到。"
-        },
-        {
-          "time": "21:43",
-          "title": "飯店 Check-in (東九条)",
-          "tags": [{"key":"hotel","label":"住宿"}],
-          "notes": "100-5 Higashikujō Matsudachō。第一晚直接休息！",
-          "lat": 34.9844, "lng": 135.7610,
-          "showLink": true
-        }
+        { "time": "12:00", "title": "統聯客運 朝馬站", "tags":[{"key":"transit","label":"交通"}], "notes":"出發！從台中朝馬搭往桃園機場。" },
+        { "time": "15:37", "title": "桃園機場第一航廈", "tags":[{"key":"transit","label":"機場"}], "notes":"準備起飛去關西。記得列印登機證+查看登機門。", "lat": 25.0793, "lng": 121.2342 },
+        { "time": "18:27", "title": "關西國際機場 KIX", "featured": true, "tags":[{"key":"transit","label":"機場"}], "notes":"抵達關西！過海關、領行李、買 ICOCA 卡（建議）。搭 JR 關空特急 Haruka 或南海電鐵到大阪。", "lat": 34.4347, "lng": 135.2444 },
+        { "time": "20:08", "title": "大阪車站 → 京都車站", "tags":[{"key":"transit","label":"轉車"}], "notes":"大阪→京都 JR 新快速約 28 分鐘到。" },
+        { "time": "21:43", "title": "飯店 Check-in (東九条)", "tags":[{"key":"hotel","label":"住宿"}], "notes":"100-5 Higashikujō Matsudachō。第一晚直接休息！", "lat": 34.9844, "lng": 135.7610, "showLink": true }
       ]
     },
     {
@@ -147,81 +117,79 @@
       "day": 5,
       "date": "8/11",
       "weekday": "二",
-      "title": "鞍馬・貴船 避暑日 + 搬家",
-      "navLabel": "Day 5 · 鞍馬貴船",
+      "title": "烏丸三條 拉麵+甜品日",
+      "navLabel": "Day 5 · 三條",
       "anchor": "day5",
-      "source": "mixed",
+      "source": "claude",
       "color": "#2d4a5c",
-      "narrative": "<strong>⚠️ 朋友的原行程時間有錯亂（凌晨橫跨日），我幫你重新整理為合理時間。</strong>京都人的避暑聖地——鞍馬寺+貴船神社川床料理！下午退房搬家到東山三條的新住宿。",
+      "narrative": "<strong>🍜 拉麵之旅 Day 1：午餐豚骨 + 晚餐博多豚骨！</strong>下午連兩家京都老派甜品（抹茶冰+寶石果凍喫茶店）。早上退房搬家到東山三條的新住宿。",
       "stops": [
-        { "time": "07:30", "title": "退房 + 寄放行李於東山住宿", "new": true, "tags":[{"key":"hotel","label":"住宿"}], "notes":"先退房，把行李寄到 Hotel Legasta Higashiyama Sanjo（傍晚再 check-in）。或寄放在京都車站投幣式 locker。" },
-        { "time": "08:30", "title": "出町柳站 → 叡山電車「展望列車きらら」", "added": true, "new": true, "tags":[{"key":"transit","label":"交通"}], "notes":"⭐ 搭最有名的觀光列車きらら，車身大窗玻璃可看楓葉/竹林隧道，從出町柳→鞍馬約 30 分鐘。", "lat": 35.0290, "lng": 135.7735 },
-        { "time": "09:30", "title": "鞍馬寺", "tags":[{"key":"temple","label":"寺院"}], "notes":"傳說中天狗修行地，搭纜車上山+山門→本殿。氣場強大。", "lat": 35.1175, "lng": 135.7715 },
-        { "time": "11:00", "title": "鞍馬→貴船山徑步道", "added": true, "new": true, "tags":[{"key":"scenery","label":"健行"}], "notes":"⭐ 經典路線：鞍馬寺→木根道→貴船神社，山林路徑約 1 小時。穿好走的鞋。中途有很多神社小景點。", "lat": 35.1200, "lng": 135.7670 },
-        { "time": "12:00", "title": "貴船神社", "tags":[{"key":"shrine","label":"神社"}], "notes":"水神社！紅燈籠石階是 IG 必拍。試試「水占卜」，籤紙泡水才會浮現字。", "lat": 35.1216, "lng": 135.7626 },
-        { "time": "13:00", "title": "ひろ文 (川床流水素麵)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"川床"}], "notes":"<strong>⭐⭐ 京都夏季限定體驗！</strong>河上座位+流水素麵，竹筒滑下來當場接住。<br><strong>⚠️ 必須早到排隊（11:00 前最好），週三公休</strong>", "lat": 35.1232, "lng": 135.7621, "placeId": "ChIJqcbJieKlAWARjbvKL96apfQ" },
-        { "time": "15:30", "title": "回京都市區 + 入住新飯店", "tags":[{"key":"hotel","label":"住宿"}], "notes":"叡山電車回出町柳→搭京阪到三條。Check-in Hotel Legasta Higashiyama Sanjo。", "lat": 35.0096, "lng": 135.7795 },
-        { "time": "18:30", "title": "三栄 鱧魚料理 (晚餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"夏季限定"}], "notes":"<strong>⭐⭐ 8 月鱧魚季正盛！</strong>京都夏季限定招牌食材，台灣完全吃不到。鱧魚火鍋、湯引、炸物全餐。鴨川旁小巷弄隱藏老店。<br><strong>✅ 週一公休，8/11 是星期二，營業中。</strong>務必預約。", "lat": 35.0094, "lng": 135.7660, "placeId": "ChIJW73R3b8IAWARcOOulZOZi78" },
-        { "time": "20:30", "title": "Soirée 喫茶店 (夜咖啡)", "added": true, "new": true, "tags":[{"key":"cafe","label":"老派"}], "notes":"⭐ 1948 年京都老派喫茶店，葡萄主題裝潢超夢幻。必點寶石果凍（ゼリーポンチ）。靠近三條河原町。", "lat": 35.0048, "lng": 135.7689, "placeId": "ChIJ8WlYRpUIAWARu4zwYKF9_68" }
+        { "time": "08:00", "title": "退房 + 寄行李於東山住宿", "added": true, "new": true, "tags":[{"key":"hotel","label":"住宿"}], "notes":"先退房，把行李寄到 Hotel Legasta Higashiyama Sanjo（傍晚再 check-in）。或寄放在京都車站投幣式 locker。" },
+        { "time": "09:30", "title": "Inoda Coffee 本店 (老派京之朝食)", "added": true, "new": true, "tags":[{"key":"cafe","label":"喫茶店"}], "notes":"⭐ 1940 年京都老派咖啡，蛋三明治+京之朝食套餐。早起的人少，慢慢享受。", "lat": 35.0081041, "lng": 135.7631928, "placeId": "ChIJHYWgPJAIAWAR1EwyilguU10" },
+        { "time": "11:00", "title": "Yoshiharu (吉晴) 豚骨拉麵", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"豚骨拉麵"}], "notes":"<strong>⭐ 4.4 星 (1100+ 評)！</strong>京都豚骨名店，11:00 開店就到避免排隊。豚骨湯頭濃厚、隨時間越濃越好喝。<br><strong>⚠️ 週一公休，8/11 是星期二營業中。</strong>", "lat": 35.0086224, "lng": 135.7458202, "placeId": "ChIJX2zr6SwGAWARsLPyyFMNrew" },
+        { "time": "13:30", "title": "智積院 (寺院 + 國寶障壁畫)", "tags":[{"key":"temple","label":"寺院"}], "notes":"真言宗智山派總本山。長谷川等伯國寶級障壁畫+名勝庭園。觀光客很少超清幽。", "lat": 34.9881, "lng": 135.7744 },
+        { "time": "15:00", "title": "Nanaya 抹茶冰淇淋 三條店 (下午茶 1)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"cafe","label":"抹茶冰"}], "notes":"<strong>⭐ 7 種濃度抹茶冰淇淋！</strong>必試 No.7 Premium 最濃郁，茶味深厚。也有黑芝麻、紅豆、焙茶口味。", "lat": 35.0093095, "lng": 135.7640547, "placeId": "ChIJN9IBs5EIAWARYLJ9Pgh1gi8" },
+        { "time": "16:00", "title": "Soirée 喫茶店 (下午茶 2 · 寶石果凍)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"cafe","label":"老派喫茶"}], "notes":"⭐ 1948 年京都老派喫茶店，葡萄主題裝潢超夢幻。必點寶石果凍（ゼリーポンチ）IG 必拍。靠近三條河原町。", "lat": 35.0048, "lng": 135.7689, "placeId": "ChIJ8WlYRpUIAWARu4zwYKF9_68" },
+        { "time": "17:00", "title": "Hotel Legasta 東山三條 Check-in", "tags":[{"key":"hotel","label":"住宿"}], "notes":"搬到東山的新住宿。", "lat": 35.0096, "lng": 135.7795 },
+        { "time": "18:00", "title": "博多長浜拉麵 三好 (晚餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"博多豚骨"}], "notes":"<strong>⭐ 4.0 星 (近 2000 評)！</strong>正宗博多豚骨拉麵，京都在地名店。湯頭濃郁、價格實惠（一碗約 ¥1000）。可加替玉（追加麵）。<br><strong>⚠️ 週三公休，8/11 是星期二營業中。</strong>", "lat": 35.0086076, "lng": 135.7705725, "placeId": "ChIJzaA0T5MIAWARVDisxcB-VD4" }
       ]
     },
     {
       "day": 6,
       "date": "8/12",
       "weekday": "三",
-      "title": "智積院 + 哲學之道 + 銀閣寺",
-      "navLabel": "Day 6 · 哲學之道",
+      "title": "中京 豚骨拉麵雙重日",
+      "navLabel": "Day 6 · 豚骨日",
       "anchor": "day6",
-      "source": "mixed",
+      "source": "claude",
       "color": "#9d3329",
-      "narrative": "朋友只排了智積院，我幫你補完整天。早上看朋友選的智積院，順著走東山北邊文化路線——哲學之道+銀閣寺+永觀堂，沿途多咖啡廳避暑。",
+      "narrative": "<strong>🍜 拉麵之旅 Day 2：午餐天下一品本店（京都豚骨之神）+ 晚餐 Ramen Uroko 京都醬油！</strong>中間排世界遺產二條城+老派咖啡 Coffee-kan。",
       "stops": [
-        { "time": "08:00", "title": "總本山 智積院", "tags":[{"key":"temple","label":"寺院"}], "notes":"真言宗智山派總本山。長谷川等伯國寶級障壁畫+名勝庭園。觀光客很少超清幽。", "lat": 34.9881, "lng": 135.7744 },
-        { "time": "09:30", "title": "銀閣寺 (慈照寺)", "added": true, "new": true, "tags":[{"key":"temple","label":"世界遺產"}], "notes":"從智積院搭巴士到銀閣寺。比金閣寺更有 wabi-sabi 禪意，向月台白沙錐+苔蘚庭園是亮點。", "lat": 35.0270, "lng": 135.7982, "placeId": "ChIJ4W9CCwUJAWARyauI6BzKiiU" },
-        { "time": "11:00", "title": "哲學之道", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"scenery","label":"散步"}], "notes":"從銀閣寺往南走 2 公里到南禪寺/永觀堂。8 月綠意盎然，沿途有貓咪和小咖啡廳。慢慢走 1 小時很享受。", "lat": 35.0228, "lng": 135.7948, "placeId": "ChIJC1iQcQQJAWARJ1jqp_e7tLU" },
-        { "time": "12:30", "title": "永觀堂 (回首阿彌陀)", "added": true, "new": true, "tags":[{"key":"temple","label":"寺院"}], "notes":"「回首阿彌陀」名寺，獨特的回頭佛像。庭園優美，冷氣殿堂可避暑。", "lat": 35.0163, "lng": 135.7950, "placeId": "ChIJF42zshgJAWARVK2wk6AFlxw" },
-        { "time": "14:00", "title": "無鄰菴 Murin-an 庭園", "added": true, "new": true, "tags":[{"key":"scenery","label":"庭園"}], "notes":"⭐ 隱藏版庭園！明治時代山縣有朋的別墅。可加錢點抹茶+和菓子，坐在榻榻米上望庭園苔蘚。觀光客超少。", "lat": 35.0119, "lng": 135.7901, "placeId": "ChIJ3Z3mk-AIAWARjvGotlykUek" },
-        { "time": "15:30", "title": "滔々と (古民家咖啡)", "added": true, "new": true, "tags":[{"key":"cafe","label":"咖啡"}], "notes":"東山八坂之塔附近的小咖啡廳，老派氛圍。簡單的早午餐+咖啡。", "lat": 34.9984, "lng": 135.7794, "placeId": "ChIJn6Uu7-wJAWAR-BzZt_fpe50" },
-        { "time": "18:30", "title": "京都肉のひろ重 御池之 (晚餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"高級和牛"}], "notes":"<strong>⭐ 5.0 星（622 評）！</strong>京都和牛壽喜燒/涮涮鍋，A5 黑毛和牛+精緻會席料理。氣氛超棒，用餐前後服務都 5 星等級。<br><strong>⚠️ 必須預約，週五公休</strong>", "lat": 35.0101, "lng": 135.7669, "placeId": "ChIJZwS7wxwJAWARE115BIEY4k4" }
+        { "time": "08:00", "title": "BREAD, ESPRESSO & 京都本店 (早餐)", "added": true, "new": true, "tags":[{"key":"cafe","label":"烘焙"}], "notes":"⭐ 4.3 星！古民家改建烘焙店，可頌+咖啡早餐。8:00 開門就到。", "lat": 35.0163599, "lng": 135.7561245, "placeId": "ChIJ57_hPp8JAWAR7qxGlVMtwlc" },
+        { "time": "11:00", "title": "天下一品 本店 (京都豚骨之神)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"濃稠豚骨"}], "notes":"<strong>⭐⭐ 京都豚骨拉麵總本山！1971 年創業！</strong>濃稠到能配飯一樣的豚骨湯頭，全日本連鎖店的祖宗就在這裡。<br>📍 在一乘寺（叡山電車一乘寺站走 3 分鐘）<br>11:00 開店到凌晨 1:00 都營業，建議開店就到。", "lat": 35.0394605, "lng": 135.7915723, "placeId": "ChIJD2_aY60JAWAR-H034WAQggc" },
+        { "time": "13:30", "title": "二條城 (世界遺產)", "tags":[{"key":"scenery","label":"世界遺產"}], "notes":"德川家康京都據點。「鶯張之床」走路會發鳥叫聲。室內有冷氣可避暑。", "lat": 35.0142, "lng": 135.7480 },
+        { "time": "15:30", "title": "Coffee-kan 錦高倉店 (下午茶)", "added": true, "new": true, "tags":[{"key":"cafe","label":"老派咖啡"}], "notes":"⭐ 4.8 星！錦市場樓上的老派咖啡店，不用進到擁擠的市場內。鬆餅+炭燒咖啡很出名。", "lat": 35.0049318, "lng": 135.7627874, "placeId": "ChIJ0z7NmKUJAWARRu6PjdA7g6g" },
+        { "time": "18:00", "title": "Ramen Uroko 三條店 (晚餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"京都醬油拉麵"}], "notes":"<strong>⭐ 4.6 星 (800+ 評)！</strong>京都當地醬油拉麵名店，胡椒風味+柚子胡椒提味。榻榻米座位、氣氛超棒。<br>5:00 開店到 9:00。<strong>現金支付（自動販賣機點餐）。</strong>", "lat": 35.0081012, "lng": 135.7649215, "placeId": "ChIJoxv_3bgJAWARiuHi46t8n9k" },
+        { "time": "20:30", "title": "木屋町夜街散步", "added": true, "new": true, "tags":[{"key":"scenery","label":"夜景"}], "notes":"沿著高瀨川走的木屋町通，夜晚酒吧+居酒屋林立，氣氛超棒。比先斗町更在地。", "lat": 35.0075, "lng": 135.7700 }
       ]
     },
     {
       "day": 7,
       "date": "8/13",
       "weekday": "四",
-      "title": "上賀茂神社 + 二條城 + 拉麵",
-      "navLabel": "Day 7 · 上賀茂+二條",
+      "title": "三條河原町 雞白湯日",
+      "navLabel": "Day 7 · 雞白湯",
       "anchor": "day7",
-      "source": "mixed",
+      "source": "claude",
       "color": "#b8893a",
-      "narrative": "朋友排了上賀茂神社+二條城+麵屋豬一，但時間鬆散，我幫你串起完整一天。京都北邊+市中心路線。",
+      "narrative": "<strong>🍜 拉麵之旅 Day 3：午餐 Jun 雞白湯 + 晚餐蛇目屋米其林雞白湯！</strong>中間散步京都御苑御所（免費景點+樹蔭多避暑）。",
       "stops": [
-        { "time": "08:00", "title": "下鴨神社", "added": true, "new": true, "tags":[{"key":"shrine","label":"世界遺產"}], "notes":"⭐ 京都最古老神社之一，糺の森（原生林）超涼快避暑。從住宿搭京阪到出町柳。", "lat": 35.0394, "lng": 135.7728 },
-        { "time": "10:00", "title": "上賀茂神社", "tags":[{"key":"shrine","label":"世界遺產"}], "notes":"京都最古老神社，下鴨神社走過去或搭巴士。", "lat": 35.0598, "lng": 135.7528 },
-        { "time": "12:00", "title": "麵屋 豬一 (午餐)", "featured": true, "tags":[{"key":"food","label":"拉麵"}], "notes":"京都最有名的醬油拉麵之一！柚子皮加進湯裡是亮點。要排隊。", "lat": 35.0048, "lng": 135.7725 },
-        { "time": "14:00", "title": "二條城", "tags":[{"key":"scenery","label":"世界遺產"}], "notes":"德川家康京都據點。「鶯張之床」走路會發鳥叫聲。室內有冷氣可避暑。", "lat": 35.0142, "lng": 135.7480 },
-        { "time": "16:00", "title": "京都御所 + 御苑散步", "added": true, "new": true, "tags":[{"key":"scenery","label":"皇居"}], "notes":"免費參觀！原日本天皇住所，廣大御苑樹蔭多很涼快。有名的金網笠松。", "lat": 35.0254, "lng": 135.7621 },
-        { "time": "18:30", "title": "京都和牛涮涮鍋 富乃丞 三條河原町店", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"A5 和牛"}], "notes":"<strong>⭐ 5.0 星（1300+ 評）！</strong>神戶牛+京都和牛涮涮鍋/壽喜燒，肉質透明標示，店員親自切片表演。台灣超難吃到的等級。", "lat": 35.0095, "lng": 135.7700, "placeId": "ChIJ8xj2RAAJAWARpeneI25IbFI" }
+        { "time": "08:00", "title": "Dining 603 (手工貝果早餐)", "added": true, "new": true, "tags":[{"key":"cafe","label":"貝果"}], "notes":"⭐ 4.7 星！家庭經營手工貝果店，奶油起司貝果超推。咖啡也很好喝。8:00 開門。", "lat": 34.9977335, "lng": 135.7658133, "placeId": "ChIJ54fmFiQJAWARDD_54SETGwE" },
+        { "time": "11:00", "title": "Jun 三本木本店 (雞白湯拉麵)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"雞白湯"}], "notes":"<strong>⭐ 4.5 星 (1000+ 評)！</strong>京都雞白湯拉麵神店，湯頭超濃厚奶白色。11:00 開店就到，11:30 後會排隊。<br>價格實惠（基本款 ¥980）+ 套餐有炸雞+飯。", "lat": 35.0163267, "lng": 135.7606414, "placeId": "ChIJsY8XmS8JAWARDWZQLBUo7-0" },
+        { "time": "13:30", "title": "京都御苑 + 京都御所散步", "added": true, "new": true, "tags":[{"key":"scenery","label":"皇居"}], "notes":"⭐ 免費參觀！原日本天皇住所，廣大御苑樹蔭多很涼快。8 月避暑首選，地上鋪小石子建議穿包鞋。", "lat": 35.0254, "lng": 135.7621 },
+        { "time": "15:30", "title": "滔々と (古民家咖啡)", "added": true, "new": true, "tags":[{"key":"cafe","label":"古民家咖啡"}], "notes":"東山八坂之塔附近的小咖啡廳，老派氛圍。簡單的早午餐+咖啡。", "lat": 34.9983512, "lng": 135.7719948, "placeId": "ChIJn6Uu7-wJAWAR-BzZt_fpe50" },
+        { "time": "18:00", "title": "Mendokoro Janomeya 蛇目屋 (晚餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"米其林雞白湯"}], "notes":"<strong>⭐ 4.1 星 + 米其林必比登推介！</strong>雞白湯濃湯拉麵，湯頭厚到像奶昔。Q 彈手揉粗麵+嫩雞胸肉+軟嫩叉燒。位於 2 樓，要找小巷弄。<br>6:00 開店，建議準時到。", "lat": 35.004148, "lng": 135.7678897, "placeId": "ChIJVVVVVZQIAWARdTg1fNxO708" }
       ]
     },
     {
       "day": 8,
       "date": "8/14",
       "weekday": "五",
-      "title": "瑠璃光院 + 移動到大阪",
-      "navLabel": "Day 8 · 瑠璃光院+大阪",
+      "title": "高台寺 + 祇園 + 大阪移動",
+      "navLabel": "Day 8 · 移動大阪",
       "anchor": "day8",
-      "source": "mixed",
+      "source": "claude",
       "color": "#6b7e3f",
-      "narrative": "朋友排了瑠璃光院但很空。我幫你補上京都最後幾個重點，下午搭電車到大阪機場附近住。<br><strong>⚠️ 提醒：瑠璃光院夏季特別拜觀通常是 7/19-8/17，需事前預約抽號碼牌！</strong>",
+      "narrative": "<strong>🍜 拉麵之旅 Day 4 + 🥩 唯一肉類晚餐！</strong>早上高台寺+寧寧之道、午餐 Torichu 雞湯麵、下午茶辻利抹茶 parfait、晚上搭 JR 到臨空城吃 One Calbi 燒肉吃到飽。",
       "stops": [
-        { "time": "08:00", "title": "瑠璃光院 (夏季特別拜觀)", "featured": true, "tags":[{"key":"temple","label":"寺院"}], "notes":"⭐ 京都最美「桌面倒影」名所！書院黑漆桌面映出綠葉超夢幻。<br><strong>⚠️ 必須事前網路預約 + 入山費 ¥2000，務必確認 8/14 開放！</strong>", "lat": 35.1047, "lng": 135.8106 },
-        { "time": "11:00", "title": "三十三間堂", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"temple","label":"寺院"}], "notes":"<strong>⭐⭐ 1001 尊千手觀音像並排！</strong>京都最震撼的視覺體驗，只有實地看才感受得到。室內可避暑。<br><em>（朋友 Day 5 有列但時間錯亂，我移到這裡）</em>", "lat": 34.9879, "lng": 135.7717, "placeId": "ChIJs4Cbj8oIAWARiBZl2-sBK6o" },
-        { "time": "12:30", "title": "京都車站 + 京都拉麵小路", "added": true, "new": true, "tags":[{"key":"food","label":"拉麵"}], "notes":"京都車站 10 樓的拉麵小路，集合全日本各地名店！最後一餐京都拉麵。或在地下街解決。", "lat": 34.9858, "lng": 135.7588 },
-        { "time": "14:30", "title": "京都駅大丸/伊勢丹採購最後伴手禮", "added": true, "new": true, "tags":[{"key":"shop","label":"購物"}], "notes":"京都車站 isetan 百貨地下街 B1 = 美食天堂！買「京銘菓」（八橋、阿闍梨餅、福壽園抹茶）回台灣。" },
-        { "time": "16:30", "title": "京都 → 臨空城 (Rinku Town)", "tags":[{"key":"transit","label":"移動"}], "notes":"<strong>建議搭 JR 特急 Haruka</strong>：京都→關西機場約 75 分鐘 ¥3370，到 KIX 後換一站到臨空城站，飯店出 1 號出口走 1 分鐘到。<br>或搭新幹線到新大阪→換 JR 關空快速→臨空城。", "lat": 34.4117, "lng": 135.2920 },
+        { "time": "08:00", "title": "2/7 kitchen (法式可頌早餐)", "added": true, "new": true, "tags":[{"key":"cafe","label":"烘焙"}], "notes":"⭐ 4.6 星！京都最強法式可頌名店，賣完就收（11:00 前）。早點去保證有貨。", "lat": 35.0024405, "lng": 135.7638534, "placeId": "ChIJbVxERZ0JAWARqwrw8XYbOdw" },
+        { "time": "09:30", "title": "高台寺 + 寧寧之道", "added": true, "new": true, "tags":[{"key":"temple","label":"寺院"}], "notes":"⭐ 豐臣秀吉夫人寧寧的居所，庭園優美+小竹林。9:00 開門人少。寧寧之道是石板路超有氣氛。", "lat": 35.0007687, "lng": 135.7812718, "placeId": "ChIJuU17z9oIAWARgMhsX3kqUSQ" },
+        { "time": "11:30", "title": "Torichu 雞湯拉麵 (午餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"雞白湯"}], "notes":"<strong>⭐ 4.7 星！60 年雞白湯老店！</strong>雞湯熬製超濃郁，叉燒+雞肉鋪滿。位於祇園附近，用餐後可以散步去花見小路。", "lat": 35.0005901, "lng": 135.7776556, "placeId": "ChIJpdgv6W0JAWARt2vzv6DqzwQ" },
+        { "time": "13:30", "title": "安井金比羅宮 (緣切緣結碑)", "added": true, "new": true, "tags":[{"key":"shrine","label":"神社"}], "notes":"⭐ 24 小時開放！超有名「斷惡緣結良緣」石碑，鑽過去就能斷壞緣分。", "lat": 35.0001126, "lng": 135.7758058, "placeId": "ChIJl0OsIMQIAWARHJSxqArrUDY" },
+        { "time": "15:00", "title": "辻利茶寮 祇園本店 (抹茶 parfait)", "added": true, "new": true, "tags":[{"key":"cafe","label":"抹茶"}], "notes":"⭐ 4.4 星！京都老牌抹茶名店，抹茶 parfait+蕨餅必點。", "lat": 35.003665, "lng": 135.774477, "placeId": "ChIJgUSxvcEIAWARVGK_421AjWo" },
+        { "time": "16:30", "title": "京都 → 臨空城 (Rinku Town)", "tags":[{"key":"transit","label":"移動"}], "notes":"<strong>建議搭 JR 特急 Haruka</strong>：京都→關西機場約 75 分鐘 ¥3370，到 KIX 後換一站到臨空城站，飯店出 1 號出口走 1 分鐘到。", "lat": 34.4117, "lng": 135.2920 },
         { "time": "18:00", "title": "Hotel Odysis Suites Check-in", "tags":[{"key":"hotel","label":"住宿"}], "notes":"<strong>⚠️ Check-in 第一件事：跟櫃台預約 8/15 早上 5:10 機場接駁巴士到 T2！</strong><br>飯店 2 樓有 LAWSON 24h 便利商店。", "lat": 34.4115, "lng": 135.2937 },
-        { "time": "19:00", "title": "One Calbi 臨空城店 (燒肉吃到飽)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"燒肉吃到飽"}], "notes":"<strong>⭐ 4.1 星 (689 評)！就在飯店旁邊走路 2-3 分鐘！</strong><br>• 多種 buffet 等級，從一般和牛到頂級和牛任你選<br>• 觸控平板點餐（有中文）<br>• 飲料 buffet 另計但很值得<br>• 牛肉品質好到「入口即化」<br><br><strong>⚠️ 強烈建議事前預約（網路或電話）！</strong>晚餐時段超熱門，臨空城 Outlet 客人都會來吃。可以提早 2 週訂位。<br>📞 電話：+81 72-463-4129<br><br>💡 完美安排：吃完走路回飯店休息，行李整理好，明天 5:10 出發剛剛好。", "lat": 34.4108, "lng": 135.2924, "placeId": "ChIJnSb6dnHJAGARWmjjnLBv49M" },
+        { "time": "19:00", "title": "One Calbi 臨空城店 (燒肉吃到飽 ⭐ 唯一肉類晚餐)", "added": true, "featured": true, "star": true, "new": true, "tags":[{"key":"food","label":"燒肉吃到飽"}], "notes":"<strong>⭐ 4.1 星 (689 評)！就在飯店旁邊走路 2-3 分鐘！</strong><br>• 多種 buffet 等級，從一般和牛到頂級和牛任你選<br>• 觸控平板點餐（有中文）<br>• 牛肉品質好到「入口即化」<br><br><strong>⚠️ 強烈建議事前預約（網路或電話）！</strong>晚餐時段超熱門，臨空城 Outlet 客人都會來吃。可以提早 2 週訂位。<br>📞 電話：+81 72-463-4129<br><br>💡 完美安排：吃完走路回飯店休息，行李整理好，明天 5:10 出發剛剛好。", "lat": 34.4108, "lng": 135.2924, "placeId": "ChIJnSb6dnHJAGARWmjjnLBv49M" },
         { "time": "21:30", "title": "回飯店整理行李 + 早睡", "tags":[{"key":"hotel","label":"住宿"}], "notes":"<strong>⚠️ 明天 04:30 起床！今晚務必把行李整理好放在門口。</strong><br>• 託運行李秤重（樂桃 7kg 限重）<br>• 換好明天要穿的衣服<br>• 護照/錢包/手機放最好拿的位置<br>• 早上有 LAWSON 可以買早餐" }
       ]
     },
