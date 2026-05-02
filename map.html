@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京都 9 天 · 互動地圖 · Map View</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f0e6;
+    --paper-dark: #ebe3d3;
+    --ink: #2a2520;
+    --ink-soft: #4a3f35;
+    --vermillion: #c8463c;
+    --vermillion-dark: #9d3329;
+    --indigo: #2d4a5c;
+    --gold: #b8893a;
+    --moss: #6b7e3f;
+    --shadow: rgba(42, 37, 32, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Noto Sans TC', 'Klee One', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    background: rgba(245, 240, 230, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid var(--vermillion);
+    display: flex; align-items: center; padding: 0 20px;
+    z-index: 1000; gap: 16px;
+  }
+  .topbar-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px; font-weight: 600; color: var(--ink);
+    white-space: nowrap;
+  }
+  .topbar-title .accent { color: var(--vermillion); }
+  .day-filter {
+    display: flex; gap: 4px; overflow-x: auto;
+    flex: 1; padding: 0 8px;
+  }
+  .day-filter::-webkit-scrollbar { height: 0; }
+  .day-btn {
+    flex-shrink: 0; padding: 6px 12px;
+    background: transparent; border: 1px solid rgba(42, 37, 32, 0.2);
+    color: var(--ink-soft); font-size: 12px;
+    font-family: 'Shippori Mincho', serif;
+    cursor: pointer; border-radius: 2px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .day-btn:hover { border-color: var(--vermillion); color: var(--vermillion); }
+  .day-btn.active {
+    background: var(--vermillion); color: var(--paper);
+    border-color: var(--vermillion);
+  }
+  .nav-link {
+    padding: 6px 14px; background: var(--ink); color: var(--paper);
+    text-decoration: none; font-size: 12px; border-radius: 2px;
+    font-family: 'Shippori Mincho', serif; letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .nav-link:hover { background: var(--vermillion); }
+
+  /* LAYOUT */
+  .layout {
+    position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+    display: grid; grid-template-columns: 380px 1fr;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid rgba(42, 37, 32, 0.1);
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(42, 37, 32, 0.2);
+    border-radius: 3px;
+  }
+
+  .day-section { margin-bottom: 24px; }
+  .day-section.hidden { display: none; }
+  .day-head {
+    display: flex; align-items: baseline; gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--ink);
+    margin-bottom: 12px;
+  }
+  .day-head-num {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--vermillion); line-height: 1;
+  }
+  .day-head-meta {
+    flex: 1;
+  }
+  .day-head-date {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 11px; letter-spacing: 3px;
+    color: var(--ink-soft);
+  }
+  .day-head-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px; font-weight: 600;
+    color: var(--ink);
+  }
+
+  .stop-card {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 10px; padding: 8px 10px;
+    border-radius: 2px; cursor: pointer;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    margin-bottom: 4px;
+  }
+  .stop-card:hover {
+    background: rgba(255, 255, 255, 0.7);
+    border-left-color: var(--vermillion);
+  }
+  .stop-card.active {
+    background: rgba(200, 70, 60, 0.08);
+    border-left-color: var(--vermillion);
+  }
+  .stop-card-time {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--vermillion);
+    line-height: 1.3; padding-top: 1px;
+  }
+  .stop-card-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 13px; font-weight: 500;
+    color: var(--ink); line-height: 1.4;
+    margin-bottom: 2px;
+  }
+  .stop-card-tag {
+    display: inline-block;
+    font-size: 9px; letter-spacing: 1px;
+    padding: 1px 6px; border-radius: 2px;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .tag-shrine { background: rgba(200, 70, 60, 0.1); color: var(--vermillion); }
+  .tag-temple { background: rgba(184, 137, 58, 0.12); color: var(--gold); }
+  .tag-food { background: rgba(107, 126, 63, 0.12); color: var(--moss); }
+  .tag-cafe { background: rgba(45, 74, 92, 0.12); color: var(--indigo); }
+  .tag-scenery { background: rgba(74, 63, 53, 0.1); color: var(--ink-soft); }
+  .tag-hotel { background: rgba(42, 37, 32, 0.08); color: var(--ink-soft); }
+  .tag-transit { background: rgba(45, 74, 92, 0.08); color: var(--indigo); }
+  .tag-shop { background: rgba(200, 70, 60, 0.08); color: var(--vermillion-dark); }
+
+  /* MAP */
+  #map {
+    width: 100%; height: 100%;
+  }
+  .map-loading {
+    position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center;
+    background: var(--paper);
+    font-family: 'Shippori Mincho', serif;
+    color: var(--ink-soft); font-size: 14px;
+    flex-direction: column; gap: 12px; text-align: center;
+    padding: 24px;
+  }
+  .map-loading .err {
+    color: var(--vermillion); max-width: 480px;
+    line-height: 1.7;
+  }
+
+  .info-window {
+    font-family: 'Noto Sans TC', sans-serif;
+    max-width: 240px;
+  }
+  .info-window h4 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .info-window .iw-time {
+    font-size: 11px; color: var(--vermillion);
+    font-weight: 600; margin-bottom: 6px;
+  }
+  .info-window p {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; grid-template-rows: 45% 55%; }
+    .sidebar { border-right: none; border-bottom: 1px solid rgba(42, 37, 32, 0.1); }
+    .topbar-title { font-size: 14px; }
+    .topbar { gap: 8px; padding: 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">京都 <span class="accent">◆</span> Map</div>
+  <div class="day-filter" id="dayFilter">
+    <button class="day-btn active" data-day="all">全部</button>
+    <button class="day-btn" data-day="1">D1</button>
+    <button class="day-btn" data-day="2">D2</button>
+    <button class="day-btn" data-day="3">D3</button>
+    <button class="day-btn" data-day="4">D4</button>
+    <button class="day-btn" data-day="5">D5</button>
+    <button class="day-btn" data-day="6">D6</button>
+    <button class="day-btn" data-day="7">D7</button>
+    <button class="day-btn" data-day="8">D8</button>
+    <button class="day-btn" data-day="9">D9</button>
+  </div>
+  <a href="index.html" class="nav-link">行程詳細</a>
+</div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div style="position: relative;">
+    <div id="map"></div>
+    <div class="map-loading" id="mapLoading">
+      <div>地圖載入中…</div>
+      <div class="err" id="mapErr" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ 行程資料 ============
+// 座標皆為近似值（足夠 marker 定位用）。
+// 部分含 place_id，地圖載入後可選擇用 Places API 抓詳細資料。
+const TRIP = [
+  { day: 1, date: "8/7 (五)", title: "抵達日 · 桃園 → 京都", color: "#9d3329",
+    stops: [
+      { time: "15:37", title: "桃園機場 T1", tag: "transit", lat: 25.0793, lng: 121.2342, note: "出發！" },
+      { time: "18:27", title: "關西國際機場 KIX", tag: "transit", lat: 34.4347, lng: 135.2444, note: "過海關、領行李、買 ICOCA。" },
+      { time: "21:43", title: "飯店 Check-in (東九条)", tag: "hotel", lat: 34.9844, lng: 135.7610, note: "100-5 Higashikujō Matsudachō" }
+    ]},
+  { day: 2, date: "8/8 (六)", title: "東山 + 祇園 + 先斗町", color: "#c8463c",
+    stops: [
+      { time: "06:43", title: "法觀寺 (八坂之塔)", tag: "temple", lat: 35.0001, lng: 135.7791 },
+      { time: "07:08", title: "產寧坂 (三年坂)", tag: "scenery", lat: 34.9982, lng: 135.7800 },
+      { time: "07:27", title: "清水寺 ★", tag: "temple", lat: 34.9949, lng: 135.7851 },
+      { time: "08:33", title: "音羽之瀧", tag: "temple", lat: 34.9947, lng: 135.7861 },
+      { time: "10:00", title: "將軍塚青龍殿", tag: "scenery", lat: 34.9986, lng: 135.8014, note: "大舞台俯瞰京都全景。" },
+      { time: "11:04", title: "知恩院+青蓮院+圓山公園", tag: "temple", lat: 35.0058, lng: 135.7838 },
+      { time: "12:51", title: "八坂神社", tag: "shrine", lat: 35.0036, lng: 135.7785 },
+      { time: "13:30", title: "安井金比羅宮", tag: "shrine", lat: 35.0001, lng: 135.7762, note: "緣切緣結碑。" },
+      { time: "13:54", title: "建仁寺", tag: "temple", lat: 34.9985, lng: 135.7747 },
+      { time: "14:27", title: "鍵善良房 (和菓子)", tag: "food", lat: 35.0035, lng: 135.7750 },
+      { time: "15:00", title: "花見小路+祇園白川", tag: "scenery", lat: 35.0030, lng: 135.7752 },
+      { time: "16:25", title: "錦市場", tag: "scenery", lat: 35.0050, lng: 135.7651 },
+      { time: "17:15", title: "京沾麵 Tsurukame ★", tag: "food", lat: 35.0095, lng: 135.7672 },
+      { time: "18:17", title: "新京極+UNIQLO", tag: "shop", lat: 35.0050, lng: 135.7689 },
+      { time: "20:15", title: "鴨川納涼床+Mar Cafe", tag: "scenery", lat: 35.0083, lng: 135.7700 }
+    ]},
+  { day: 3, date: "8/9 (日)", title: "嵐山 + 嵯峨野 + 北野金閣", color: "#b8893a",
+    stops: [
+      { time: "06:54", title: "渡月橋 ★", tag: "scenery", lat: 35.0133, lng: 135.6779 },
+      { time: "07:24", title: "天龍寺+竹林小徑", tag: "temple", lat: 35.0167, lng: 135.6738 },
+      { time: "08:31", title: "嵐山公園龜山地區展望台", tag: "scenery", lat: 35.0150, lng: 135.6707 },
+      { time: "09:53", title: "大河內山莊+常寂光寺", tag: "temple", lat: 35.0185, lng: 135.6705 },
+      { time: "10:34", title: "二尊院+祇王寺", tag: "temple", lat: 35.0214, lng: 135.6671 },
+      { time: "11:30", title: "化野念佛寺+愛宕念佛寺", tag: "temple", lat: 35.0250, lng: 135.6630 },
+      { time: "12:22", title: "可樂餅 (午餐)", tag: "food", lat: 35.0200, lng: 135.6700 },
+      { time: "14:16", title: "粟餅所 澤屋", tag: "food", lat: 35.0312, lng: 135.7350 },
+      { time: "14:43", title: "北野天滿宮+平野神社", tag: "shrine", lat: 35.0312, lng: 135.7350 },
+      { time: "16:20", title: "金閣寺+龍安寺 ★", tag: "temple", lat: 35.0394, lng: 135.7292 },
+      { time: "18:29", title: "Kitada (晚餐)", tag: "food", lat: 34.9858, lng: 135.7588 }
+    ]},
+  { day: 4, date: "8/10 (一)", title: "伏見稻荷 + 宇治抹茶", color: "#6b7e3f",
+    stops: [
+      { time: "06:37", title: "伏見稻荷大社 (登山版) ★", tag: "shrine", lat: 34.9671, lng: 135.7727, note: "全程 4 小時，準備 2L 水！" },
+      { time: "12:11", title: "地雞家心 (午餐)", tag: "food", lat: 34.8910, lng: 135.8060 },
+      { time: "12:35", title: "平等院 鳳凰堂", tag: "temple", lat: 34.8893, lng: 135.8077 },
+      { time: "13:41", title: "宇治公園+朝霧橋", tag: "scenery", lat: 34.8920, lng: 135.8089 },
+      { time: "14:30", title: "宇治神社+宇治上神社", tag: "shrine", lat: 34.8930, lng: 135.8137 },
+      { time: "15:30", title: "大吉山展望台", tag: "scenery", lat: 34.8910, lng: 135.8160 },
+      { time: "16:21", title: "伊藤久右衛門 ★", tag: "cafe", lat: 34.8997, lng: 135.8094, note: "抹茶蕎麥麵+聖代必點。" },
+      { time: "18:30", title: "AEON KYOTO 蓋章 ★", tag: "shop", lat: 34.9810, lng: 135.7548, placeId: "ChIJ8Uuuf6kIAWARFFrpsu-HJHQ", note: "限定免費明信片！五點集章。21:00 關。" },
+      { time: "20:30", title: "回飯店 (東九条)", tag: "hotel", lat: 34.9844, lng: 135.7610 }
+    ]},
+  { day: 5, date: "8/11 (二)", title: "鞍馬・貴船 避暑日 + 搬家", color: "#2d4a5c",
+    stops: [
+      { time: "07:30", title: "退房+寄放行李", tag: "hotel", lat: 34.9844, lng: 135.7610 },
+      { time: "08:30", title: "出町柳→叡電きらら", tag: "transit", lat: 35.0290, lng: 135.7735 },
+      { time: "09:30", title: "鞍馬寺", tag: "temple", lat: 35.1175, lng: 135.7715 },
+      { time: "11:00", title: "鞍馬→貴船山徑步道", tag: "scenery", lat: 35.1200, lng: 135.7670, note: "山林路徑約 1 小時。" },
+      { time: "12:00", title: "貴船神社", tag: "shrine", lat: 35.1216, lng: 135.7626, note: "水占卜！" },
+      { time: "13:00", title: "ひろ文 (川床流水素麵) ★★", tag: "food", lat: 35.1232, lng: 135.7621, placeId: "ChIJqcbJieKlAWARjbvKL96apfQ", note: "京都夏季限定！週三公休，11:00 前到排隊。" },
+      { time: "15:30", title: "Hotel Legasta 三條 入住", tag: "hotel", lat: 35.0096, lng: 135.7795 },
+      { time: "18:30", title: "三栄 鱧魚料理 ★★", tag: "food", lat: 35.0094, lng: 135.7660, placeId: "ChIJW73R3b8IAWARcOOulZOZi78", note: "8 月鱧魚季正盛！週一公休，今天二，OK。務必預約。" },
+      { time: "20:30", title: "Soirée 喫茶店", tag: "cafe", lat: 35.0048, lng: 135.7689, placeId: "ChIJ8WlYRpUIAWARu4zwYKF9_68", note: "1948 老派喫茶，葡萄主題寶石果凍。" }
+    ]},
+  { day: 6, date: "8/12 (三)", title: "智積院 + 哲學之道 + 銀閣寺", color: "#9d3329",
+    stops: [
+      { time: "08:00", title: "總本山 智積院", tag: "temple", lat: 34.9881, lng: 135.7744, note: "長谷川等伯國寶級障壁畫。" },
+      { time: "09:30", title: "銀閣寺 (慈照寺)", tag: "temple", lat: 35.0270, lng: 135.7982, placeId: "ChIJ4W9CCwUJAWARyauI6BzKiiU" },
+      { time: "11:00", title: "哲學之道 ★", tag: "scenery", lat: 35.0228, lng: 135.7948, placeId: "ChIJC1iQcQQJAWARJ1jqp_e7tLU", note: "2 公里散步。" },
+      { time: "12:30", title: "永觀堂 (回首阿彌陀)", tag: "temple", lat: 35.0163, lng: 135.7950, placeId: "ChIJF42zshgJAWARVK2wk6AFlxw" },
+      { time: "14:00", title: "無鄰菴 庭園 ★", tag: "scenery", lat: 35.0119, lng: 135.7901, placeId: "ChIJ3Z3mk-AIAWARjvGotlykUek", note: "明治隱藏版庭園，可點抹茶。" },
+      { time: "15:30", title: "滔々と (古民家咖啡)", tag: "cafe", lat: 34.9984, lng: 135.7794, placeId: "ChIJn6Uu7-wJAWAR-BzZt_fpe50" },
+      { time: "18:30", title: "京都肉のひろ重 ★", tag: "food", lat: 35.0101, lng: 135.7669, placeId: "ChIJZwS7wxwJAWARE115BIEY4k4", note: "5.0 星 A5 和牛壽喜燒。週五公休，今三 OK。必訂。" }
+    ]},
+  { day: 7, date: "8/13 (四)", title: "上賀茂神社 + 二條城 + 拉麵", color: "#b8893a",
+    stops: [
+      { time: "08:00", title: "下鴨神社", tag: "shrine", lat: 35.0394, lng: 135.7728, note: "糺の森避暑。" },
+      { time: "10:00", title: "上賀茂神社", tag: "shrine", lat: 35.0598, lng: 135.7528 },
+      { time: "12:00", title: "麵屋 豬一 ★", tag: "food", lat: 35.0048, lng: 135.7725, note: "京都柚子皮醬油拉麵。" },
+      { time: "14:00", title: "二條城", tag: "scenery", lat: 35.0142, lng: 135.7480, note: "鶯張之床。室內可避暑。" },
+      { time: "16:00", title: "京都御所+御苑", tag: "scenery", lat: 35.0254, lng: 135.7621, note: "免費，樹蔭多。" },
+      { time: "18:30", title: "富乃丞 三條河原町 ★", tag: "food", lat: 35.0095, lng: 135.7700, placeId: "ChIJ8xj2RAAJAWARpeneI25IbFI", note: "5.0 星神戶牛+京都和牛涮涮鍋。必訂。" }
+    ]},
+  { day: 8, date: "8/14 (五)", title: "瑠璃光院 + 移動到大阪", color: "#6b7e3f",
+    stops: [
+      { time: "08:00", title: "瑠璃光院 (夏季特別拜觀) ★", tag: "temple", lat: 35.1047, lng: 135.8106, note: "桌面倒影名所。⚠️ 必須事前網路預約 + ¥2000 入山費！" },
+      { time: "11:00", title: "三十三間堂 ★★", tag: "temple", lat: 34.9879, lng: 135.7717, placeId: "ChIJs4Cbj8oIAWARiBZl2-sBK6o", note: "1001 尊千手觀音像並排。" },
+      { time: "12:30", title: "京都車站 拉麵小路", tag: "food", lat: 34.9858, lng: 135.7588 },
+      { time: "14:30", title: "大丸/伊勢丹 採購伴手禮", tag: "shop", lat: 34.9858, lng: 135.7585, note: "京銘菓：八橋、阿闍梨餅、福壽園。" },
+      { time: "16:30", title: "京都 → 臨空城 (Haruka)", tag: "transit", lat: 34.4117, lng: 135.2920, note: "JR 特急 Haruka 約 75 分鐘 ¥3370。" },
+      { time: "18:00", title: "Hotel Odysis Suites Check-in", tag: "hotel", lat: 34.4115, lng: 135.2937, note: "⚠️ 立刻預約 8/15 5:10 接駁巴士到 T2！" },
+      { time: "19:00", title: "One Calbi 臨空城店 ★", tag: "food", lat: 34.4108, lng: 135.2924, placeId: "ChIJnSb6dnHJAGARWmjjnLBv49M", note: "燒肉吃到飽，飯店走 2-3 分鐘。事前預約！" },
+      { time: "21:30", title: "整理行李+早睡", tag: "hotel", lat: 34.4115, lng: 135.2937, note: "明天 04:30 起床，樂桃 7kg 限重秤好。" }
+    ]},
+  { day: 9, date: "8/15 (六)", title: "樂桃 0755 起飛 · 凌晨出發", color: "#2a2520",
+    stops: [
+      { time: "04:30", title: "起床+退房", tag: "transit", lat: 34.4115, lng: 135.2937, note: "飯店 24h 退房。" },
+      { time: "05:10", title: "飯店免費接駁巴士 → T2", tag: "transit", lat: 34.4115, lng: 135.2937, note: "前一晚預約！直達 KIX T2 25 分鐘。" },
+      { time: "05:35", title: "抵達 KIX T2", tag: "transit", lat: 34.4347, lng: 135.2298, note: "樂桃專屬航廈。" },
+      { time: "07:55", title: "✈️ 樂桃起飛 → 桃園", tag: "transit", lat: 34.4347, lng: 135.2298 }
+    ]}
+];
+
+// ============ 渲染側欄 ============
+const sidebar = document.getElementById('sidebar');
+const stopRefs = []; // 存 marker / dom 對應
+
+function tagLabel(t) {
+  return ({ shrine:'神社', temple:'寺院', food:'美食', cafe:'咖啡', scenery:'景點',
+    hotel:'住宿', transit:'交通', shop:'購物' })[t] || t;
+}
+
+function renderSidebar() {
+  let stopIdx = 0;
+  TRIP.forEach((day) => {
+    const sec = document.createElement('div');
+    sec.className = 'day-section';
+    sec.dataset.day = day.day;
+    sec.innerHTML = `
+      <div class="day-head">
+        <div class="day-head-num">0${day.day}</div>
+        <div class="day-head-meta">
+          <div class="day-head-date">${day.date}</div>
+          <div class="day-head-title">${day.title}</div>
+        </div>
+      </div>
+    `;
+    day.stops.forEach((stop) => {
+      const card = document.createElement('div');
+      card.className = 'stop-card';
+      card.dataset.stopIdx = stopIdx;
+      card.innerHTML = `
+        <div class="stop-card-time">${stop.time}</div>
+        <div>
+          <div class="stop-card-title">${stop.title}</div>
+          <span class="stop-card-tag tag-${stop.tag}">${tagLabel(stop.tag)}</span>
+        </div>
+      `;
+      const idx = stopIdx;
+      card.addEventListener('click', () => focusStop(idx));
+      sec.appendChild(card);
+      stopRefs.push({ stop, day, card, marker: null });
+      stopIdx++;
+    });
+    sidebar.appendChild(sec);
+  });
+}
+renderSidebar();
+
+// ============ 日篩選 ============
+const dayFilter = document.getElementById('dayFilter');
+let activeDay = 'all';
+dayFilter.addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  activeDay = e.target.dataset.day;
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.toggle('active', b === e.target));
+  document.querySelectorAll('.day-section').forEach(sec => {
+    sec.classList.toggle('hidden', activeDay !== 'all' && sec.dataset.day !== activeDay);
+  });
+  applyMapFilter();
+});
+
+// ============ Google Maps ============
+let map, polylines = [], infoWindow;
+
+function initMap() {
+  document.getElementById('mapLoading').style.display = 'none';
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 35.0050, lng: 135.7681 },
+    zoom: 12,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: true,
+    styles: [
+      { featureType: "poi", elementType: "labels", stylers: [{ visibility: "simplified" }] },
+      { featureType: "transit.station", elementType: "labels", stylers: [{ visibility: "off" }] }
+    ]
+  });
+  infoWindow = new google.maps.InfoWindow();
+
+  // 建 markers
+  stopRefs.forEach((ref, idx) => {
+    const { stop, day } = ref;
+    const marker = new google.maps.Marker({
+      position: { lat: stop.lat, lng: stop.lng },
+      map,
+      title: `${stop.time} ${stop.title}`,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        fillColor: day.color,
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeWeight: 2
+      },
+      label: {
+        text: String(day.day),
+        color: '#fff',
+        fontSize: '10px',
+        fontWeight: '700'
+      }
+    });
+    marker.addListener('click', () => focusStop(idx));
+    ref.marker = marker;
+  });
+
+  // 每日連線 polyline
+  TRIP.forEach((day) => {
+    const path = day.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+    const line = new google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: day.color,
+      strokeOpacity: 0.6,
+      strokeWeight: 2.5,
+      map
+    });
+    polylines.push({ day: day.day, line });
+  });
+}
+
+function applyMapFilter() {
+  if (!map) return;
+  stopRefs.forEach(ref => {
+    const visible = activeDay === 'all' || String(ref.day.day) === activeDay;
+    ref.marker.setMap(visible ? map : null);
+  });
+  polylines.forEach(p => {
+    const visible = activeDay === 'all' || String(p.day) === activeDay;
+    p.line.setMap(visible ? map : null);
+  });
+  // 縮放到該日範圍
+  if (activeDay !== 'all') {
+    const bounds = new google.maps.LatLngBounds();
+    stopRefs.forEach(ref => {
+      if (String(ref.day.day) === activeDay) bounds.extend(ref.marker.getPosition());
+    });
+    if (!bounds.isEmpty()) map.fitBounds(bounds, 60);
+  }
+}
+
+let lastActiveCard = null;
+function focusStop(idx) {
+  const ref = stopRefs[idx];
+  if (!map || !ref) return;
+  // 高亮側欄
+  if (lastActiveCard) lastActiveCard.classList.remove('active');
+  ref.card.classList.add('active');
+  lastActiveCard = ref.card;
+  ref.card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // 移動地圖
+  map.panTo(ref.marker.getPosition());
+  if (map.getZoom() < 14) map.setZoom(15);
+  // InfoWindow
+  infoWindow.setContent(`
+    <div class="info-window">
+      <div class="iw-time">${ref.stop.time} · Day ${ref.day.day}</div>
+      <h4>${ref.stop.title}</h4>
+      ${ref.stop.note ? `<p>${ref.stop.note}</p>` : ''}
+    </div>
+  `);
+  infoWindow.open({ map, anchor: ref.marker });
+}
+
+// ============ 載入 Maps API ============
+function loadMapsApi() {
+  // GitHub Pages 上以 ?key=XXX 注入；或直接修改下方常數
+  const params = new URLSearchParams(location.search);
+  const apiKey = params.get('key') || 'YOUR_GOOGLE_MAPS_API_KEY';
+
+  if (apiKey === 'YOUR_GOOGLE_MAPS_API_KEY') {
+    document.getElementById('mapErr').style.display = 'block';
+    document.getElementById('mapErr').innerHTML =
+      '⚠️ 尚未設定 Google Maps API key。<br>' +
+      '在網址加上 <code>?key=你的KEY</code>，或直接編輯 <code>map.html</code> 內的 <code>apiKey</code> 常數。<br>' +
+      '部署於 GitHub Pages 才能載入（API key 已設定 referrer 限制）。';
+    return;
+  }
+
+  const s = document.createElement('script');
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&callback=initMap&loading=async`;
+  s.async = true;
+  s.defer = true;
+  s.onerror = () => {
+    document.getElementById('mapErr').style.display = 'block';
+    document.getElementById('mapErr').textContent = '⚠️ 地圖載入失敗，請檢查 API key 與網域限制。';
+  };
+  document.head.appendChild(s);
+}
+
+window.initMap = initMap;
+loadMapsApi();
+</script>
+</body>
+</html>
