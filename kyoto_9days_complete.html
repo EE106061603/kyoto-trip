@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京都 9 天完整行程 · 8/7 - 8/15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f0e6;
+    --paper-dark: #ebe3d3;
+    --ink: #2a2520;
+    --ink-soft: #4a3f35;
+    --vermillion: #c8463c;
+    --vermillion-dark: #9d3329;
+    --indigo: #2d4a5c;
+    --gold: #b8893a;
+    --moss: #6b7e3f;
+    --shadow: rgba(42, 37, 32, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans TC', 'Klee One', sans-serif;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(184, 137, 58, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(45, 74, 92, 0.04) 0%, transparent 50%);
+    color: var(--ink);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+  /* HEADER */
+  header { padding: 80px 0 60px; text-align: center; position: relative; }
+  header::before {
+    content: '京'; position: absolute; top: 40px; left: 50%;
+    transform: translateX(-50%); font-family: 'Shippori Mincho', serif;
+    font-size: 280px; color: var(--vermillion); opacity: 0.06;
+    font-weight: 700; line-height: 1; z-index: 0; pointer-events: none;
+  }
+  .header-content { position: relative; z-index: 1; }
+  .meta-tag {
+    display: inline-block; font-family: 'Shippori Mincho', serif;
+    font-size: 13px; letter-spacing: 8px; color: var(--vermillion);
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  h1 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 700; color: var(--ink); line-height: 1.1;
+    margin-bottom: 16px; letter-spacing: -0.02em;
+  }
+  h1 .accent { color: var(--vermillion); font-style: italic; }
+  .subtitle {
+    font-family: 'Klee One', cursive; font-size: 18px;
+    color: var(--ink-soft); margin-bottom: 32px;
+  }
+  .header-divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin: 32px 0;
+  }
+  .header-divider::before, .header-divider::after {
+    content: ''; height: 1px; width: 80px;
+    background: var(--ink-soft); opacity: 0.4;
+  }
+  .header-divider span {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--vermillion); font-size: 20px;
+  }
+  .quick-info {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px; margin-top: 40px; padding: 32px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(42, 37, 32, 0.08);
+    border-radius: 2px;
+  }
+  .info-item { text-align: left; }
+  .info-label {
+    font-family: 'Shippori Mincho', serif; font-size: 11px;
+    letter-spacing: 4px; color: var(--vermillion);
+    text-transform: uppercase; margin-bottom: 8px; display: block;
+  }
+  .info-value { font-size: 15px; color: var(--ink); font-weight: 500; }
+
+  /* DAY NAV */
+  .day-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(245, 240, 230, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 2px solid var(--vermillion);
+    border-bottom: 1px solid rgba(42, 37, 32, 0.1);
+    padding: 16px 0; margin: 40px 0 0;
+  }
+  .day-nav-inner {
+    display: flex; gap: 8px; overflow-x: auto;
+    padding: 0 32px; max-width: 1080px; margin: 0 auto;
+  }
+  .day-nav a {
+    flex-shrink: 0; padding: 8px 16px; text-decoration: none;
+    color: var(--ink-soft); font-size: 13px; font-weight: 500;
+    border: 1px solid transparent; border-radius: 2px;
+    transition: all 0.2s; white-space: nowrap;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .day-nav a:hover { color: var(--vermillion); border-color: var(--vermillion); }
+
+  /* DAY SECTION */
+  .day {
+    padding: 80px 0;
+    border-bottom: 1px dashed rgba(42, 37, 32, 0.15);
+    position: relative;
+  }
+  .day:last-of-type { border-bottom: none; }
+  .day-header {
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 32px; align-items: end;
+    margin-bottom: 32px; padding-bottom: 24px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .day-number {
+    font-family: 'Shippori Mincho', serif; font-size: 96px;
+    font-weight: 700; color: var(--vermillion);
+    line-height: 0.9; letter-spacing: -0.04em;
+  }
+  .day-number .small {
+    font-size: 24px; color: var(--ink-soft);
+    display: block; letter-spacing: 4px;
+    margin-bottom: 8px; font-weight: 400;
+  }
+  .day-meta { text-align: right; }
+  .day-date {
+    font-family: 'Shippori Mincho', serif; font-size: 14px;
+    letter-spacing: 6px; color: var(--ink-soft); margin-bottom: 8px;
+  }
+  .day-title {
+    font-family: 'Shippori Mincho', serif; font-size: 32px;
+    font-weight: 600; color: var(--ink); line-height: 1.3;
+  }
+  .day-source {
+    display: inline-block; padding: 4px 12px; margin-top: 8px;
+    font-size: 11px; letter-spacing: 2px;
+    border-radius: 2px; font-family: 'Shippori Mincho', serif;
+  }
+  .source-friend {
+    background: rgba(45, 74, 92, 0.1); color: var(--indigo);
+    border: 1px solid rgba(45, 74, 92, 0.3);
+  }
+  .source-claude {
+    background: rgba(200, 70, 60, 0.1); color: var(--vermillion);
+    border: 1px solid rgba(200, 70, 60, 0.3);
+  }
+  .source-mixed {
+    background: rgba(184, 137, 58, 0.12); color: var(--gold);
+    border: 1px solid rgba(184, 137, 58, 0.3);
+  }
+  .day-narrative {
+    background: rgba(255, 255, 255, 0.4);
+    border-left: 3px solid var(--vermillion);
+    padding: 20px 28px; margin-bottom: 48px;
+    font-family: 'Klee One', cursive;
+    font-size: 15px; color: var(--ink-soft); line-height: 1.8;
+  }
+
+  /* TIMELINE */
+  .stops { display: flex; flex-direction: column; position: relative; }
+  .stops::before {
+    content: ''; position: absolute; left: 80px; top: 16px; bottom: 16px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--ink-soft) 8%, var(--ink-soft) 92%, transparent);
+    opacity: 0.3;
+  }
+  .stop {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; padding: 16px 0; position: relative;
+  }
+  .stop-time {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--vermillion); text-align: right;
+    padding-top: 4px; position: relative;
+  }
+  .stop-time::after {
+    content: ''; position: absolute; right: -23px; top: 10px;
+    width: 11px; height: 11px;
+    background: var(--paper); border: 2px solid var(--vermillion);
+    border-radius: 50%; z-index: 2;
+  }
+  .stop.featured .stop-time::after {
+    background: var(--vermillion);
+    box-shadow: 0 0 0 4px rgba(200, 70, 60, 0.15);
+  }
+  .stop.added .stop-time::after {
+    background: var(--gold); border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(184, 137, 58, 0.2);
+  }
+  .stop-content {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 16px 22px; border-radius: 2px;
+    border: 1px solid rgba(42, 37, 32, 0.08);
+    transition: all 0.2s;
+  }
+  .stop-content:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(200, 70, 60, 0.3);
+    transform: translateX(4px);
+  }
+  .stop.added .stop-content { border-left: 3px solid var(--gold); }
+  .stop.featured .stop-content { border-left: 3px solid var(--vermillion); }
+  .stop-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 16px;
+    margin-bottom: 6px; flex-wrap: wrap;
+  }
+  .stop-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px; font-weight: 600;
+    color: var(--ink); line-height: 1.4;
+  }
+  .stop-title .star { color: var(--gold); margin-right: 4px; }
+  .stop-title .new {
+    display: inline-block; background: var(--gold); color: white;
+    font-size: 9px; padding: 2px 6px; border-radius: 2px;
+    margin-left: 6px; letter-spacing: 1px; vertical-align: middle;
+  }
+  .stop-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    display: inline-block; padding: 2px 8px;
+    font-size: 10px; letter-spacing: 1px;
+    border-radius: 2px; font-family: 'Shippori Mincho', serif;
+  }
+  .tag.shrine { background: rgba(200, 70, 60, 0.1); color: var(--vermillion); }
+  .tag.temple { background: rgba(184, 137, 58, 0.12); color: var(--gold); }
+  .tag.food { background: rgba(107, 126, 63, 0.12); color: var(--moss); }
+  .tag.cafe { background: rgba(45, 74, 92, 0.12); color: var(--indigo); }
+  .tag.scenery { background: rgba(74, 63, 53, 0.1); color: var(--ink-soft); }
+  .tag.hotel { background: rgba(42, 37, 32, 0.08); color: var(--ink-soft); }
+  .tag.transit { background: rgba(45, 74, 92, 0.08); color: var(--indigo); }
+  .tag.shop { background: rgba(200, 70, 60, 0.08); color: var(--vermillion-dark); }
+  .stop-notes {
+    font-size: 13px; color: var(--ink-soft);
+    line-height: 1.6; margin-bottom: 8px;
+  }
+  .stop-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .map-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; background: var(--ink); color: var(--paper);
+    text-decoration: none; font-size: 11px; border-radius: 2px;
+    transition: all 0.2s; font-weight: 500; letter-spacing: 0.5px;
+  }
+  .map-link:hover { background: var(--vermillion); transform: translateY(-1px); }
+  .map-link::before { content: '◉'; font-size: 9px; }
+
+  /* SUMMARY */
+  .summary-section {
+    padding: 80px 0; background: rgba(45, 74, 92, 0.04);
+    margin: 0 -32px; padding-left: 32px; padding-right: 32px;
+  }
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 32px;
+  }
+  .summary-card {
+    background: var(--paper); padding: 28px;
+    border-radius: 2px; border: 1px solid rgba(42, 37, 32, 0.1);
+    position: relative;
+  }
+  .summary-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--vermillion);
+  }
+  .summary-card h3 {
+    font-family: 'Shippori Mincho', serif; font-size: 18px;
+    margin-bottom: 12px; color: var(--ink);
+  }
+  .summary-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+  .summary-card ul { list-style: none; margin-top: 8px; }
+  .summary-card li {
+    font-size: 13px; color: var(--ink-soft);
+    padding: 6px 0; border-bottom: 1px dashed rgba(42, 37, 32, 0.1);
+  }
+  .summary-card li:last-child { border: none; }
+  .section-title {
+    font-family: 'Shippori Mincho', serif; font-size: 36px;
+    color: var(--ink); margin-bottom: 16px;
+    position: relative; padding-left: 24px;
+  }
+  .section-title::before {
+    content: ''; position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%); width: 4px; height: 32px;
+    background: var(--vermillion);
+  }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 24px; padding: 16px 24px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px dashed rgba(42, 37, 32, 0.2);
+    border-radius: 2px; font-size: 13px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    border: 2px solid var(--vermillion); background: var(--paper);
+  }
+  .legend-dot.added { background: var(--gold); border-color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 0 40px; text-align: center;
+    border-top: 1px solid rgba(42, 37, 32, 0.1);
+  }
+  .footer-mark {
+    font-family: 'Shippori Mincho', serif; color: var(--vermillion);
+    font-size: 24px; margin-bottom: 12px;
+  }
+  .footer-text { font-size: 13px; color: var(--ink-soft); letter-spacing: 1px; }
+
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .day-header { grid-template-columns: 1fr; gap: 16px; }
+    .day-meta { text-align: left; }
+    .day-number { font-size: 72px; }
+    .day-title { font-size: 24px; }
+    .stop { grid-template-columns: 60px 1fr; gap: 16px; }
+    .stops::before { left: 60px; }
+    .stop-time::after { right: -18px; }
+  }
+  @media print {
+    .day-nav { display: none; }
+    .day { page-break-inside: avoid; padding: 40px 0; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-content">
+      <div class="meta-tag">KYOTO 京都</div>
+      <h1>九日 <span class="accent">古都</span><br>之旅</h1>
+      <div class="subtitle">Complete Itinerary · 8/7 — 8/15</div>
+      <div class="header-divider"><span>◆</span></div>
+
+      <div class="quick-info">
+        <div class="info-item">
+          <span class="info-label">期間 · Dates</span>
+          <span class="info-value">8/7 — 8/15<br>9 天 8 夜</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">同行者 · Travelers</span>
+          <span class="info-value">朋友群<br>Friends</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">氣候 · Weather</span>
+          <span class="info-value">30 — 37°C<br>盛夏酷暑</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">航班 · Flights</span>
+          <span class="info-value">桃園 ⇄ 關西<br>KIX</span>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot"></span>朋友已排</div>
+        <div class="legend-item"><span class="legend-dot added"></span>新增補完</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="day-nav">
+  <div class="day-nav-inner">
+    <a href="#day1">Day 1 · 抵達</a>
+    <a href="#day2">Day 2 · 東山祇園</a>
+    <a href="#day3">Day 3 · 嵐山</a>
+    <a href="#day4">Day 4 · 伏見宇治</a>
+    <a href="#day5">Day 5 · 鞍馬貴船</a>
+    <a href="#day6">Day 6 · 哲學之道</a>
+    <a href="#day7">Day 7 · 上賀茂+二條</a>
+    <a href="#day8">Day 8 · 瑠璃光院+大阪</a>
+    <a href="#day9">Day 9 · 返程</a>
+    <a href="#summary">行前提醒</a>
+  </div>
+</nav>
+
+<main class="container">
+
+<!-- ============ DAY 1 ============ -->
+<section class="day" id="day1">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY ONE</span>01</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 7 · 星期五</div>
+      <div class="day-title">抵達日 · 桃園 → 京都</div>
+      <div class="day-source source-friend">朋友已排</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    早上從台中朝馬搭客運到桃園機場，下午搭機抵達關西，傍晚轉車到京都。當晚直接休息，準備隔天行程。
+  </div>
+
+  <div class="stops">
+    <div class="stop"><div class="stop-time">12:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">統聯客運 朝馬站</div><div class="stop-tags"><span class="tag transit">交通</span></div></div>
+      <div class="stop-notes">出發！從台中朝馬搭往桃園機場。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">15:37</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">桃園機場第一航廈</div><div class="stop-tags"><span class="tag transit">機場</span></div></div>
+      <div class="stop-notes">準備起飛去關西。記得列印登機證+查看登機門。</div>
+    </div></div>
+    <div class="stop featured"><div class="stop-time">18:27</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">關西國際機場 KIX</div><div class="stop-tags"><span class="tag transit">機場</span></div></div>
+      <div class="stop-notes">抵達關西！過海關、領行李、買 ICOCA 卡（建議）。搭 JR 關空特急 Haruka 或南海電鐵到大阪。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">20:08</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">大阪車站 → 京都車站</div><div class="stop-tags"><span class="tag transit">轉車</span></div></div>
+      <div class="stop-notes">大阪→京都 JR 新快速約 28 分鐘到。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">21:43</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">飯店 Check-in (東九条)</div><div class="stop-tags"><span class="tag hotel">住宿</span></div></div>
+      <div class="stop-notes">100-5 Higashikujō Matsudachō。第一晚直接休息！</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query=34.9844,135.7610">在 Maps 開啟</a></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 2 ============ -->
+<section class="day" id="day2">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY TWO</span>02</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 8 · 星期六</div>
+      <div class="day-title">東山 + 祇園 + 先斗町</div>
+      <div class="day-source source-friend">朋友已排</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    從早到晚的東山祇園大滿貫！清晨先衝清水寺避開人潮，中午開始往祇園錦市場移動，傍晚先斗町吃晚餐看夜景。
+  </div>
+
+  <div class="stops">
+    <div class="stop"><div class="stop-time">06:43</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">法觀寺 (八坂之塔)</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">京都地標五重塔。早上人少最好拍。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">07:08</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">產寧坂 (三年坂)</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">傳統石板坂道，清晨無人最有氣氛。</div>
+    </div></div>
+    <div class="stop featured"><div class="stop-time">07:27</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">清水寺</div><div class="stop-tags"><span class="tag temple">世界遺產</span></div></div>
+      <div class="stop-notes">早到避開遊客！清水舞台俯瞰京都。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">08:33</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">音羽之瀧</div><div class="stop-tags"><span class="tag temple">景點</span></div></div>
+      <div class="stop-notes">三道泉水分別代表健康、學業、戀愛，只能選一道飲用。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">10:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">東山山頂公園 + 將軍塚青龍殿</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">大舞台俯瞰京都全景！比清水舞台更壯觀，遊客超少。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">11:04</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">知恩院 → 青蓮院 → 圓山公園</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">三個景點連走。圓山公園夏天綠意盎然，可以坐下休息。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">12:51</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">京都八坂神社</div><div class="stop-tags"><span class="tag shrine">神社</span></div></div>
+      <div class="stop-notes">祇園代表神社。求姻緣和美的神社。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">13:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">安井金比羅宮 (緣切緣結碑)</div><div class="stop-tags"><span class="tag shrine">神社</span></div></div>
+      <div class="stop-notes">超有名的「斷惡緣結良緣」石碑，鑽過去就能斷壞緣分。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">13:54</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">建仁寺</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">京都最古老禪寺，有名的「風神雷神圖」。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">14:27</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">鍵善良房 四條本店 (和菓子)</div><div class="stop-tags"><span class="tag food">和菓子</span></div></div>
+      <div class="stop-notes">300 年和菓子老店！必試「葛切」（葛粉條沾黑糖蜜）。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">15:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">花見小路 + 巽橋 + 祇園白川</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">⚠️ 花見小路禁止追拍藝伎舞伎，會被罰款。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">16:25</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">錦市場 + 博士章魚燒</div><div class="stop-tags"><span class="tag scenery">市場</span></div></div>
+      <div class="stop-notes">京都廚房！邊吃邊買乾物伴手禮。</div>
+    </div></div>
+    <div class="stop featured"><div class="stop-time">17:15</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">京沾麵 Tsurukame 本店 (晚餐)</div><div class="stop-tags"><span class="tag food">沾麵</span></div></div>
+      <div class="stop-notes">京都名店沾麵！濃厚雞白湯加魚介系，麵 Q 彈。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">18:17</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">DAISO + 新京極 + UNIQLO</div><div class="stop-tags"><span class="tag shop">購物</span></div></div>
+      <div class="stop-notes">河原町商店街購物時間！</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">20:15</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">鴨川納涼床 + Mar Cafe</div><div class="stop-tags"><span class="tag scenery">夜景</span></div></div>
+      <div class="stop-notes">夏季限定鴨川川床景觀！Mar Cafe 喝杯飲料收尾。</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 3 ============ -->
+<section class="day" id="day3">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY THREE</span>03</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 9 · 星期日</div>
+      <div class="day-title">嵐山 + 嵯峨野 + 北野金閣</div>
+      <div class="day-source source-friend">朋友已排</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    嵐山深度路線！早晨竹林+渡月橋，深入嵯峨野秘境寺群，下午北野天滿宮+金閣寺龍安寺收尾。
+  </div>
+
+  <div class="stops">
+    <div class="stop featured"><div class="stop-time">06:54</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">渡月橋</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">嵐山經典地標！清晨人少最美。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">07:24</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">天龍寺 + 嵐山竹林小徑</div><div class="stop-tags"><span class="tag temple">世界遺產</span></div></div>
+      <div class="stop-notes">從天龍寺後門接竹林，避開人潮。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">08:31</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">嵐山公園龜山地區 山頂展望台</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">俯瞰保津川峽谷的絕景點！</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">09:53</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">大河內山莊 + 常寂光寺 + 落柿舍</div><div class="stop-tags"><span class="tag temple">嵯峨野</span></div></div>
+      <div class="stop-notes">嵯峨野文化深度路線。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">10:34</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">二尊院 + 祇王寺 + 嵯峨鳥居本</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">祇王寺的苔庭非常美，氣氛清幽。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">11:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">化野念佛寺 + 愛宕念佛寺</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">愛宕念佛寺有 1200 尊羅漢石像，每尊表情都不同！</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">12:22</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">可樂餅 (午餐輕食)</div><div class="stop-tags"><span class="tag food">輕食</span></div></div>
+      <div class="stop-notes">嵐山街邊小吃補充能量。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">14:16</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">粟餅所 澤屋 (紅豆糰子)</div><div class="stop-tags"><span class="tag food">和菓子</span></div></div>
+      <div class="stop-notes">300 年老店！現做紅豆粟餅，北野天滿宮對面。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">14:43</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">北野天滿宮 + 平野神社</div><div class="stop-tags"><span class="tag shrine">神社</span></div></div>
+      <div class="stop-notes">學問之神菅原道真，學業考試求籤聖地。</div>
+    </div></div>
+    <div class="stop featured"><div class="stop-time">16:20</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">金閣寺 + 龍安寺</div><div class="stop-tags"><span class="tag temple">世界遺產</span></div></div>
+      <div class="stop-notes">兩座世界遺產連走。鏡湖池金閣倒影+龍安寺枯山水。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">18:29</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">Kitada (晚餐)</div><div class="stop-tags"><span class="tag food">餐廳</span></div></div>
+      <div class="stop-notes">回京都車站附近吃晚餐。</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 4 ============ -->
+<section class="day" id="day4">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY FOUR</span>04</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 10 · 星期一</div>
+      <div class="day-title">伏見稻荷登山 + 宇治抹茶</div>
+      <div class="day-source source-friend">朋友已排</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    早上完整爬完伏見稻荷千本鳥居+稻荷山頂，下午搭 JR 到宇治，看平等院、走宇治神社、爬大吉山展望台、伊藤久右衛門喝抹茶收尾。
+  </div>
+
+  <div class="stops">
+    <div class="stop featured"><div class="stop-time">06:37</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">伏見稻荷大社 (完整登山版)</div><div class="stop-tags"><span class="tag shrine">神社</span></div></div>
+      <div class="stop-notes">⭐ 6:30 出發！清晨無人最棒。完整路線：千本鳥居→重輕石→竹林→熊鷹社→四つ辻→眼力社→御劔社→稻荷山頂三峰，全程 4 小時。<br><strong>⚠️ 8 月超熱，準備 2 公升水！</strong></div>
+    </div></div>
+    <div class="stop"><div class="stop-time">12:11</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">地雞家心 (日式串燒) 午餐</div><div class="stop-tags"><span class="tag food">串燒</span></div></div>
+      <div class="stop-notes">宇治站附近的日式串燒店。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">12:35</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">平等院 鳳凰堂</div><div class="stop-tags"><span class="tag temple">世界遺產</span></div></div>
+      <div class="stop-notes">10 円硬幣上的建築！加買鳳凰堂內部參觀。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">13:41</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">宇治公園 + 朝霧橋 + 紫式部像</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">源氏物語作者紫式部出生地。橋上眺宇治川。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">14:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">宇治神社 + 宇治上神社</div><div class="stop-tags"><span class="tag shrine">神社</span></div></div>
+      <div class="stop-notes">宇治神社是兔子神社！宇治上神社是日本最古老神社建築（世界遺產）。</div>
+    </div></div>
+    <div class="stop"><div class="stop-time">15:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">大吉山展望台</div><div class="stop-tags"><span class="tag scenery">景點</span></div></div>
+      <div class="stop-notes">爬山 20 分鐘，俯瞰宇治川+平等院，視野超棒。</div>
+    </div></div>
+    <div class="stop featured"><div class="stop-time">16:21</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">伊藤久右衛門 宇治本店茶房</div><div class="stop-tags"><span class="tag cafe">抹茶</span></div></div>
+      <div class="stop-notes">宇治抹茶老店！抹茶蕎麥麵+抹茶聖代必點。</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 5 - REWORKED ============ -->
+<section class="day" id="day5">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY FIVE</span>05</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 11 · 星期二</div>
+      <div class="day-title">鞍馬・貴船 避暑日 + 搬家</div>
+      <div class="day-source source-mixed">部分朋友 + 補完</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    <strong>⚠️ 朋友的原行程時間有錯亂（凌晨橫跨日），我幫你重新整理為合理時間。</strong>京都人的避暑聖地——鞍馬寺+貴船神社川床料理！下午退房搬家到東山三條的新住宿。
+  </div>
+
+  <div class="stops">
+    <div class="stop"><div class="stop-time">07:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">退房 + 寄放行李於東山住宿<span class="new">調整</span></div>
+        <div class="stop-tags"><span class="tag hotel">住宿</span></div>
+      </div>
+      <div class="stop-notes">先退房，把行李寄到 Hotel Legasta Higashiyama Sanjo（傍晚再 check-in）。或寄放在京都車站投幣式 locker。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">08:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">出町柳站 → 叡山電車「展望列車きらら」<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag transit">交通</span></div>
+      </div>
+      <div class="stop-notes">⭐ 搭最有名的觀光列車きらら，車身大窗玻璃可看楓葉/竹林隧道，從出町柳→鞍馬約 30 分鐘。</div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">09:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">鞍馬寺</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">傳說中天狗修行地，搭纜車上山+山門→本殿。氣場強大。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">11:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">鞍馬→貴船山徑步道<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag scenery">健行</span></div>
+      </div>
+      <div class="stop-notes">⭐ 經典路線：鞍馬寺→木根道→貴船神社，山林路徑約 1 小時。穿好走的鞋。中途有很多神社小景點。</div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">12:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">貴船神社</div><div class="stop-tags"><span class="tag shrine">神社</span></div></div>
+      <div class="stop-notes">水神社！紅燈籠石階是 IG 必拍。試試「水占卜」，籤紙泡水才會浮現字。</div>
+    </div></div>
+
+    <div class="stop added featured"><div class="stop-time">13:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title"><span class="star">★</span>ひろ文 (川床流水素麵)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">川床</span></div>
+      </div>
+      <div class="stop-notes"><strong>⭐⭐ 京都夏季限定體驗！</strong>河上座位+流水素麵，竹筒滑下來當場接住。<br><strong>⚠️ 必須早到排隊（11:00 前最好），週三公休</strong></div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJqcbJieKlAWARjbvKL96apfQ">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">15:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">回京都市區 + 入住新飯店</div><div class="stop-tags"><span class="tag hotel">住宿</span></div></div>
+      <div class="stop-notes">叡山電車回出町柳→搭京阪到三條。Check-in Hotel Legasta Higashiyama Sanjo。</div>
+    </div></div>
+
+    <div class="stop added featured"><div class="stop-time">18:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title"><span class="star">★</span>三栄 鱧魚料理 (晚餐)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">夏季限定</span></div>
+      </div>
+      <div class="stop-notes"><strong>⭐⭐ 8 月鱧魚季正盛！</strong>京都夏季限定招牌食材，台灣完全吃不到。鱧魚火鍋、湯引、炸物全餐。鴨川旁小巷弄隱藏老店。<br><strong>⚠️ 週一公休（8/11 是星期一！需改星期二 8/12）</strong>，務必預約。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJW73R3b8IAWARcOOulZOZi78">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">20:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">Soirée 喫茶店 (夜咖啡)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag cafe">老派</span></div>
+      </div>
+      <div class="stop-notes">⭐ 1948 年京都老派喫茶店，葡萄主題裝潢超夢幻。必點寶石果凍（ゼリーポンチ）。靠近三條河原町。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJ8WlYRpUIAWARu4zwYKF9_68">在 Maps 開啟</a></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 6 ============ -->
+<section class="day" id="day6">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY SIX</span>06</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 12 · 星期三</div>
+      <div class="day-title">智積院 + 哲學之道 + 銀閣寺</div>
+      <div class="day-source source-mixed">部分朋友 + 補完</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    朋友只排了智積院，我幫你補完整天。早上看朋友選的智積院，順著走東山北邊文化路線——哲學之道+銀閣寺+永觀堂，沿途多咖啡廳避暑。
+  </div>
+
+  <div class="stops">
+    <div class="stop"><div class="stop-time">08:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">總本山 智積院</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">真言宗智山派總本山。長谷川等伯國寶級障壁畫+名勝庭園。觀光客很少超清幽。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">09:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">銀閣寺 (慈照寺)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag temple">世界遺產</span></div>
+      </div>
+      <div class="stop-notes">從智積院搭巴士到銀閣寺。比金閣寺更有 wabi-sabi 禪意，向月台白沙錐+苔蘚庭園是亮點。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJ4W9CCwUJAWARyauI6BzKiiU">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added featured"><div class="stop-time">11:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title"><span class="star">★</span>哲學之道<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag scenery">散步</span></div>
+      </div>
+      <div class="stop-notes">從銀閣寺往南走 2 公里到南禪寺/永觀堂。8 月綠意盎然，沿途有貓咪和小咖啡廳。慢慢走 1 小時很享受。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJC1iQcQQJAWARJ1jqp_e7tLU">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">12:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">永觀堂 (回首阿彌陀)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag temple">寺院</span></div>
+      </div>
+      <div class="stop-notes">「回首阿彌陀」名寺，獨特的回頭佛像。庭園優美，冷氣殿堂可避暑。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJF42zshgJAWARVK2wk6AFlxw">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">14:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">無鄰菴 Murin-an 庭園<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag scenery">庭園</span></div>
+      </div>
+      <div class="stop-notes">⭐ 隱藏版庭園！明治時代山縣有朋的別墅。可加錢點抹茶+和菓子，坐在榻榻米上望庭園苔蘚。觀光客超少。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJ3Z3mk-AIAWARjvGotlykUek">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">15:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">滔々と (古民家咖啡)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag cafe">咖啡</span></div>
+      </div>
+      <div class="stop-notes">東山八坂之塔附近的小咖啡廳，老派氛圍。簡單的早午餐+咖啡。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJn6Uu7-wJAWAR-BzZt_fpe50">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added featured"><div class="stop-time">18:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title"><span class="star">★</span>京都肉のひろ重 御池之 (晚餐)<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">高級和牛</span></div>
+      </div>
+      <div class="stop-notes"><strong>⭐ 5.0 星（622 評）！</strong>京都和牛壽喜燒/涮涮鍋，A5 黑毛和牛+精緻會席料理。氣氛超棒，用餐前後服務都 5 星等級。<br><strong>⚠️ 必須預約，週五公休</strong></div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJZwS7wxwJAWARE115BIEY4k4">在 Maps 開啟</a></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 7 ============ -->
+<section class="day" id="day7">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY SEVEN</span>07</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 13 · 星期四</div>
+      <div class="day-title">上賀茂神社 + 二條城 + 拉麵</div>
+      <div class="day-source source-mixed">部分朋友 + 補完</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    朋友排了上賀茂神社+二條城+麵屋豬一，但時間鬆散，我幫你串起完整一天。京都北邊+市中心路線。
+  </div>
+
+  <div class="stops">
+    <div class="stop added"><div class="stop-time">08:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">下鴨神社<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag shrine">世界遺產</span></div>
+      </div>
+      <div class="stop-notes">⭐ 京都最古老神社之一，糺の森（原生林）超涼快避暑。從住宿搭京阪到出町柳。</div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">10:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">上賀茂神社</div><div class="stop-tags"><span class="tag shrine">世界遺產</span></div></div>
+      <div class="stop-notes">京都最古老神社，下鴨神社走過去或搭巴士。</div>
+    </div></div>
+
+    <div class="stop featured"><div class="stop-time">12:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">麵屋 豬一 (午餐)</div><div class="stop-tags"><span class="tag food">拉麵</span></div></div>
+      <div class="stop-notes">京都最有名的醬油拉麵之一！柚子皮加進湯裡是亮點。要排隊。</div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">14:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">二條城</div><div class="stop-tags"><span class="tag scenery">世界遺產</span></div></div>
+      <div class="stop-notes">德川家康京都據點。「鶯張之床」走路會發鳥叫聲。室內有冷氣可避暑。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">16:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">京都御所 + 御苑散步<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag scenery">皇居</span></div>
+      </div>
+      <div class="stop-notes">免費參觀！原日本天皇住所，廣大御苑樹蔭多很涼快。有名的金網笠松。</div>
+    </div></div>
+
+    <div class="stop added featured"><div class="stop-time">18:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title"><span class="star">★</span>京都和牛涮涮鍋 富乃丞 三條河原町店<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">A5 和牛</span></div>
+      </div>
+      <div class="stop-notes"><strong>⭐ 5.0 星（1300+ 評）！</strong>神戶牛+京都和牛涮涮鍋/壽喜燒，肉質透明標示，店員親自切片表演。台灣超難吃到的等級。</div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJ8xj2RAAJAWARpeneI25IbFI">在 Maps 開啟</a></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 8 ============ -->
+<section class="day" id="day8">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY EIGHT</span>08</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 14 · 星期五</div>
+      <div class="day-title">瑠璃光院 + 移動到大阪</div>
+      <div class="day-source source-mixed">部分朋友 + 補完</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    朋友排了瑠璃光院但很空。我幫你補上京都最後幾個重點，下午搭電車到大阪機場附近住。<br><strong>⚠️ 提醒：瑠璃光院夏季特別拜觀通常是 7/19-8/17，需事前預約抽號碼牌！</strong>
+  </div>
+
+  <div class="stops">
+    <div class="stop featured"><div class="stop-time">08:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">瑠璃光院 (夏季特別拜觀)</div><div class="stop-tags"><span class="tag temple">寺院</span></div></div>
+      <div class="stop-notes">⭐ 京都最美「桌面倒影」名所！書院黑漆桌面映出綠葉超夢幻。<br><strong>⚠️ 必須事前網路預約 + 入山費 ¥2000，務必確認 8/14 開放！</strong></div>
+    </div></div>
+
+    <div class="stop added featured"><div class="stop-time">11:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title"><span class="star">★</span>三十三間堂<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag temple">寺院</span></div>
+      </div>
+      <div class="stop-notes"><strong>⭐⭐ 1001 尊千手觀音像並排！</strong>京都最震撼的視覺體驗，只有實地看才感受得到。室內可避暑。<br><em>（朋友 Day 5 有列但時間錯亂，我移到這裡）</em></div>
+      <div class="stop-actions"><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query_place_id=ChIJs4Cbj8oIAWARiBZl2-sBK6o">在 Maps 開啟</a></div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">12:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">京都車站 + 京都拉麵小路<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">拉麵</span></div>
+      </div>
+      <div class="stop-notes">京都車站 10 樓的拉麵小路，集合全日本各地名店！最後一餐京都拉麵。或在地下街解決。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">14:30</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">京都駅大丸/伊勢丹採購最後伴手禮<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag shop">購物</span></div>
+      </div>
+      <div class="stop-notes">京都車站 isetan 百貨地下街 B1 = 美食天堂！買「京銘菓」（八橋、阿闍梨餅、福壽園抹茶）回台灣。</div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">16:30</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">京都 → 大阪機場奧德西斯</div><div class="stop-tags"><span class="tag transit">移動</span></div></div>
+      <div class="stop-notes">JR 京都→新大阪→大阪機場，約 1.5 小時。Check-in 後機場附近吃晚餐。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">19:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">大阪機場附近 大阪燒/章魚燒<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">大阪料理</span></div>
+      </div>
+      <div class="stop-notes">難得到關西，最後一晚吃大阪 soul food！大阪燒、章魚燒、串炸都很道地。</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ DAY 9 ============ -->
+<section class="day" id="day9">
+  <div class="day-header">
+    <div class="day-number"><span class="small">DAY NINE</span>09</div>
+    <div class="day-meta">
+      <div class="day-date">8 / 15 · 星期六</div>
+      <div class="day-title">最後早餐 + 返程台灣</div>
+      <div class="day-source source-mixed">部分朋友 + 補完</div>
+    </div>
+  </div>
+  <div class="day-narrative">
+    朋友排了京都塔，但 8/14 已經移動到大阪機場附近，這天直接從關西機場返台會比較順。我幫你重新整理為合理動線。
+  </div>
+
+  <div class="stops">
+    <div class="stop added"><div class="stop-time">07:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">飯店退房 + 機場 check-in<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag transit">出發</span></div>
+      </div>
+      <div class="stop-notes">確認航班時間，提早 3 小時到關西機場辦理 check-in。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">09:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">關西機場 (KIX) 自由活動<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag transit">機場</span></div>
+      </div>
+      <div class="stop-notes">機場第一航廈 4 樓有「商店街」可以買最後伴手禮。蛋糕、Royce'巧克力、白い恋人之類的。</div>
+    </div></div>
+
+    <div class="stop added"><div class="stop-time">11:00</div><div class="stop-content">
+      <div class="stop-header">
+        <div class="stop-title">機場美食街 最後一餐<span class="new">補完</span></div>
+        <div class="stop-tags"><span class="tag food">日本料理</span></div>
+      </div>
+      <div class="stop-notes">關西機場有很多選擇：CoCo 壱番屋、すき家、麵類、迴轉壽司。記得試試！</div>
+    </div></div>
+
+    <div class="stop"><div class="stop-time">13:00</div><div class="stop-content">
+      <div class="stop-header"><div class="stop-title">起飛 → 桃園機場</div><div class="stop-tags"><span class="tag transit">航班</span></div></div>
+      <div class="stop-notes">回台灣！平安降落桃園後搭客運回台中朝馬。</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="summary-section" id="summary">
+  <div class="container">
+    <h2 class="section-title">行前提醒 · Reminders</h2>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h3>📞 必訂位餐廳</h3>
+        <ul>
+          <li>三栄 (8/11 鱧魚) · 週一公休⚠️</li>
+          <li>ひろ文 (8/11 川床) · 週三公休</li>
+          <li>京都肉のひろ重 (8/12) · 週五公休⚠️</li>
+          <li>富乃丞 三條 (8/13) · 必訂</li>
+          <li>京沾麵 Tsurukame (8/8) · 建議訂</li>
+        </ul>
+        <p style="margin-top:12px; font-size:12px; color:var(--vermillion);">⚠️ 8/11 是星期一，三栄公休！建議改訂其他天，或改吃 Day 5 的吉兵衛/三田。</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>⚠️ 朋友行程的時間問題</h3>
+        <ul>
+          <li><strong>Day 5</strong>：原行程橫跨凌晨，已重新整理為合理時間</li>
+          <li><strong>Day 8</strong>：朋友把大阪機場跟京都塔都放這天，已重新分配</li>
+          <li><strong>瑠璃光院</strong>：必須事前網路預約，務必確認 8/14 有開放</li>
+          <li><strong>三十三間堂</strong>：原 Day 5 列但時間錯亂，移到 Day 8</li>
+        </ul>
+      </div>
+
+      <div class="summary-card">
+        <h3>🌡️ 8 月酷暑對策</h3>
+        <p>京都 8 月 30-37°C，建議攜帶：</p>
+        <ul>
+          <li>遮陽帽 + 折傘</li>
+          <li>涼感小毛巾</li>
+          <li>大水壺（隨時補水）</li>
+          <li>防曬乳（強）</li>
+          <li>備用涼鞋（貴船會踩水）</li>
+        </ul>
+        <p style="margin-top:12px; font-size:12px;">Day 4 伏見稻荷登山要 4 小時，準備 2L 水！</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>🚆 交通建議</h3>
+        <p>建議買 ICOCA 卡，搭巴士+電車超方便。</p>
+        <p style="margin-top:8px;"><strong>Day 5 鞍馬貴船</strong>：建議買「叡電一日券」¥800。</p>
+        <p style="margin-top:8px;"><strong>Day 4 宇治</strong>：搭 JR 奈良線。</p>
+        <p style="margin-top:8px;"><strong>Day 8</strong>：京都→大阪可搭 JR 特急 Haruka 直達機場。</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>💴 現金準備</h3>
+        <p>很多老店、神社、川床料理只收現金。</p>
+        <p style="margin-top:8px;"><strong>建議準備 5-10 萬日圓現金</strong>分散在不同錢包。</p>
+        <p style="margin-top:8px;">7-11 ATM 可用台灣金融卡領日圓。</p>
+        <p style="margin-top:8px;">川床料理一人預算 ¥6000-15000。</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>🎯 我新增的 9 個亮點</h3>
+        <ul>
+          <li>叡山電車きらら觀光列車</li>
+          <li>鞍馬→貴船山徑健行</li>
+          <li>ひろ文 川床流水素麵</li>
+          <li>三栄 鱧魚料理（夏季限定）</li>
+          <li>Soirée 老派喫茶店</li>
+          <li>銀閣寺 + 哲學之道</li>
+          <li>無鄰菴隱藏庭園</li>
+          <li>京都肉のひろ重 5★ 和牛</li>
+          <li>富乃丞 5★ 涮涮鍋</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-mark">◆ 京 ◆</div>
+    <div class="footer-text">9 天京都完整行程 · 8/7 - 8/15 · 朋友規劃 + 我補完</div>
+  </div>
+</footer>
+
+</body>
+</html>
