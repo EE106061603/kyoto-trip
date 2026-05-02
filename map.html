@@ -375,7 +375,9 @@ let TRIP = [];
 const stopRefs = []; // sidebar/marker 對應
 let map;
 const placeCache = new Map(); // placeId → Place 物件 (避免重複請求)
-const polylines = [];
+const routeOverlays = []; // { day, renderer? , line? } — 一律用同一個結構處理顯示/隱藏
+let directionsService = null;
+let directionsApiBroken = false; // 任一日請求失敗代表 API 沒開，後續全用 polyline 省 quota
 let mapsApiReady = false;
 let dataReady = false;
 
@@ -513,21 +515,76 @@ function renderMap() {
     ref.marker = marker;
   });
 
-  TRIP.forEach((day) => {
-    const path = day.stops
-      .filter(s => s.lat != null && s.lng != null)
-      .map(s => ({ lat: s.lat, lng: s.lng }));
-    if (path.length < 2) return;
+  directionsService = new google.maps.DirectionsService();
+  TRIP.forEach((day) => renderRoute(day));
+}
+
+// 嘗試用 Directions API 畫實際路線；失敗就退回直線
+function renderRoute(day) {
+  const stopsWithCoords = day.stops.filter(s => s.lat != null && s.lng != null);
+  if (stopsWithCoords.length < 2) return;
+
+  const drawFallbackPolyline = () => {
+    const path = stopsWithCoords.map(s => ({ lat: s.lat, lng: s.lng }));
     const line = new google.maps.Polyline({
-      path,
-      geodesic: true,
+      path, geodesic: true,
       strokeColor: day.color,
-      strokeOpacity: 0.6,
-      strokeWeight: 2.5,
+      strokeOpacity: 0.4,
+      strokeWeight: 2,
       map
     });
-    polylines.push({ day: day.day, line });
+    routeOverlays.push({ day: day.day, line });
+  };
+
+  if (directionsApiBroken) {
+    drawFallbackPolyline();
+    return;
+  }
+
+  const origin = stopsWithCoords[0];
+  const destination = stopsWithCoords[stopsWithCoords.length - 1];
+  const waypoints = stopsWithCoords.slice(1, -1).map(s => ({
+    location: { lat: s.lat, lng: s.lng },
+    stopover: false
+  }));
+
+  directionsService.route({
+    origin: { lat: origin.lat, lng: origin.lng },
+    destination: { lat: destination.lat, lng: destination.lng },
+    waypoints,
+    travelMode: google.maps.TravelMode.DRIVING,
+    optimizeWaypoints: false
+  }).then(result => {
+    const renderer = new google.maps.DirectionsRenderer({
+      directions: result,
+      map,
+      suppressMarkers: true,
+      preserveViewport: true,
+      polylineOptions: {
+        strokeColor: day.color,
+        strokeOpacity: 0.75,
+        strokeWeight: 4
+      }
+    });
+    routeOverlays.push({ day: day.day, renderer });
+  }).catch(err => {
+    console.warn(`Day ${day.day} Directions failed:`, err && err.message ? err.message : err);
+    if (err && /not.*authorized|REQUEST_DENIED|API.*disabled/i.test(err.message || '')) {
+      directionsApiBroken = true;
+      showDirectionsHint();
+    }
+    drawFallbackPolyline();
   });
+}
+
+function showDirectionsHint() {
+  if (document.getElementById('directionsHint')) return;
+  const hint = document.createElement('div');
+  hint.id = 'directionsHint';
+  hint.style.cssText = 'position:absolute;bottom:12px;left:12px;right:12px;max-width:520px;background:rgba(255,255,255,0.96);border:1px solid rgba(200,70,60,0.3);border-left:3px solid var(--vermillion);padding:10px 14px;font-size:12px;color:var(--ink-soft);z-index:30;border-radius:2px;line-height:1.6;box-shadow:0 2px 8px rgba(42,37,32,0.1);';
+  hint.innerHTML = '⚠️ 路線 API 未啟用，已改用直線連線。<br>若要看實際路線：到 Google Cloud Console 把 <strong>Directions API</strong> 加入此 key 的「API 限制」清單。';
+  hint.addEventListener('click', () => hint.remove());
+  document.querySelector('.layout > div:last-child').appendChild(hint);
 }
 
 function applyMapFilter() {
@@ -537,9 +594,10 @@ function applyMapFilter() {
     const visible = activeDay === 'all' || String(ref.day.day) === activeDay;
     ref.marker.setMap(visible ? map : null);
   });
-  polylines.forEach(p => {
-    const visible = activeDay === 'all' || String(p.day) === activeDay;
-    p.line.setMap(visible ? map : null);
+  routeOverlays.forEach(o => {
+    const visible = activeDay === 'all' || String(o.day) === activeDay;
+    if (o.renderer) o.renderer.setMap(visible ? map : null);
+    else if (o.line) o.line.setMap(visible ? map : null);
   });
   if (activeDay !== 'all') {
     const bounds = new google.maps.LatLngBounds();
