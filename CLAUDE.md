@@ -39,7 +39,8 @@
 ```
 kyoto-trip/
 ├── index.html           # 主頁：9 天行程（傳統格式，左到右排版）
-├── map.html             # 互動式 Google Maps 版本（左行程右地圖）
+├── map.html.bak         # 互動式 Google Maps 版本（暫停使用，恢復：git mv map.html.bak map.html）
+├── trips.json           # 共享行程資料（index.html 從這裡讀）
 ├── CLAUDE.md            # 此檔案（給 Claude Code 看的）
 └── README.md            # GitHub repo 說明
 ```
