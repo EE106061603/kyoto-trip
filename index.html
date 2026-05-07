@@ -164,7 +164,7 @@ main {
 .schedule-header,
 .stop-row {
   display: grid;
-  grid-template-columns: 28px 54px 54px minmax(180px, 1.2fr) minmax(160px, 1fr) 48px 48px 28px;
+  grid-template-columns: 32px 68px 68px minmax(200px, 1.4fr) minmax(160px, 1fr) 96px 96px 72px 72px 32px;
   gap: 0;
   align-items: stretch;
   border-bottom: 1px solid var(--line-soft);
@@ -172,14 +172,14 @@ main {
 
 .schedule-header {
   background: var(--paper-dark);
-  font-size: 10px; color: var(--ink-faint);
+  font-size: 12px; color: var(--ink-faint);
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
   border-bottom: 2px solid var(--line);
 }
 .schedule-header > div {
-  padding: 8px 6px;
+  padding: 9px 6px;
   text-align: center;
 }
 .schedule-header > div:nth-child(4),
@@ -216,7 +216,7 @@ main {
 
 .stop-time {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
   justify-content: center;
   color: var(--ink-soft);
   font-weight: 500;
@@ -236,13 +236,13 @@ main {
   border: none;
   background: transparent;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--ink);
   padding: 2px 0;
   outline: none;
 }
 .stop-name input:focus { background: var(--paper-light); padding: 2px 4px; margin: 0 -4px; }
-.stop-name .icon { font-size: 14px; margin-right: 4px; flex-shrink: 0; }
+.stop-name .icon { font-size: 16px; margin-right: 6px; flex-shrink: 0; }
 .stop-name .name-row { display: flex; align-items: center; width: 100%; min-width: 0; }
 
 /* 備註欄 */
@@ -256,7 +256,7 @@ main {
   border: none;
   background: transparent;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-soft);
   padding: 2px 0;
   outline: none;
@@ -274,20 +274,89 @@ main {
   font-style: normal;
 }
 
+/* 評分欄 (Tabelog / Google Maps) */
+.stop-rating {
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 4px 6px;
+  gap: 2px;
+  min-width: 0;
+}
+.stop-rating .rating-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.stop-rating .rating-link.tabelog {
+  color: #d4830f;
+  background: rgba(212, 131, 15, 0.08);
+}
+.stop-rating .rating-link.tabelog:hover {
+  background: #d4830f;
+  color: white;
+}
+.stop-rating .rating-link.gmaps {
+  color: #1a73e8;
+  background: rgba(26, 115, 232, 0.08);
+}
+.stop-rating .rating-link.gmaps:hover {
+  background: #1a73e8;
+  color: white;
+}
+.stop-rating .rating-link.empty {
+  color: var(--ink-faint);
+  background: transparent;
+  cursor: pointer;
+  border: 1px dashed var(--line);
+  font-size: 11px;
+  font-weight: 400;
+  font-family: inherit;
+  opacity: 0.5;
+}
+.stop-rating .rating-link.empty:hover {
+  color: var(--vermillion);
+  border-color: var(--vermillion);
+  opacity: 1;
+}
+.stop-rating .star-icon {
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
 .stop-num-input {
   justify-content: center;
+  padding: 6px 4px;
 }
 .stop-num-input input {
   width: 100%;
+  min-width: 0;
   border: none;
   background: transparent;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   color: var(--ink);
-  padding: 2px;
+  padding: 4px 2px;
   outline: none;
   border-radius: 2px;
+  /* 隱藏 Chrome/Safari/Edge 的 spinner 但保留 number 行為 */
+  -moz-appearance: textfield;
+}
+.stop-num-input input::-webkit-outer-spin-button,
+.stop-num-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .stop-num-input input:focus {
   background: var(--paper-light);
@@ -300,7 +369,7 @@ main {
   justify-content: center;
   color: var(--ink-faint);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   transition: color 0.1s;
 }
 .stop-delete:hover { color: var(--red); }
@@ -366,21 +435,7 @@ main {
 }
 .help-toggle.hidden { display: none; }
 
-/* MOBILE */
-@media (max-width: 720px) {
-  .schedule-header,
-  .stop-row {
-    grid-template-columns: 24px 50px minmax(140px, 1fr) minmax(100px, 0.8fr) 44px 44px 24px;
-  }
-  /* 隱藏「結束」欄 */
-  .schedule-header > div:nth-child(3),
-  .stop-row > div:nth-child(3) {
-    display: none;
-  }
-  .toolbar h1 .sub { display: none; }
-  main { padding: 10px; }
-  .stop-note input { font-size: 11px; }
-}
+/* 桌面版專用，無手機 RWD */
 
 /* TYPE COLORS */
 .type-食物 .icon, .type-飲品 .icon { color: var(--gold); }
@@ -419,6 +474,8 @@ main {
     <li>• 改任何「停留(分)」或「移動(分)」→ 後面全部跟著重算</li>
     <li>• 拖拉 ⋮⋮ 把手調整順序</li>
     <li>• 點 + 新增 stop / 點 × 刪除</li>
+    <li>• 點 <kbd>+ 食log</kbd> / <kbd>+ Maps</kbd> 新增評分連結</li>
+    <li>• 已填的評分：左鍵打開連結 / 右鍵編輯</li>
     <li>• 全部存在瀏覽器 (localStorage)</li>
   </ul>
   <p style="margin-top: 8px; color: var(--ink-faint); font-size: 10px;">
@@ -481,7 +538,9 @@ const DEFAULT_DATA = {
         { name: '錦市場', icon: '🏪', type: '商場', stay: 19, travel: 1, note: '京都廚房，邊吃邊買' },
         { name: '博士章魚燒', icon: '🐙', type: '食物', stay: 16, travel: 3, note: '' },
         { name: '神戶肉飯糰 Hiro', icon: '🍙', type: '食物', stay: 8, travel: 3, note: '' },
-        { name: '京沾麵 Tsurukame', icon: '🍜', type: '食物', stay: 60, travel: 3, note: '建議訂位 / 替代:麵匠たか松' },
+        { name: '京沾麵 Tsurukame', icon: '🍜', type: '食物', stay: 60, travel: 3, note: '建議訂位 / 替代:麵匠たか松',
+          tabelog: { rating: '3.62', url: 'https://tabelog.com/kyoto/A2601/A260301/26020091/' },
+          gmaps: { rating: '3.7', url: 'https://www.google.com/maps/search/?api=1&query=京つけ麺つるかめ' } },
         { name: 'DAISO', icon: '🛍️', type: '商場', stay: 29, travel: 4, note: 'EVA拖鞋/雨衣/保冷貼' },
         { name: '新京極商店街', icon: '🛍️', type: '商場', stay: 25, travel: 4, note: '' },
         { name: 'UNIQLO Kawaramachi', icon: '👕', type: '商場', stay: 30, travel: 6, note: 'AIRism 短褲+冷感口罩' },
@@ -512,7 +571,9 @@ const DEFAULT_DATA = {
         { name: '平野神社', icon: '⛩️', type: '景點', stay: 27, travel: 17 },
         { name: '金閣寺', icon: '🏯', type: '景點', stay: 39, travel: 26 },
         { name: '龍安寺 (拍門口)', icon: '⛩️', type: '景點', stay: 6, travel: 51 },
-        { name: 'Kitada (貝だし麵 晚餐)', icon: '🍜', type: '食物', stay: 60, travel: 0 },
+        { name: 'Kitada (貝だし麵 晚餐)', icon: '🍜', type: '食物', stay: 60, travel: 0,
+          tabelog: { rating: '3.81', url: 'https://tabelog.com/kyoto/A2601/A260101/26035953/' },
+          gmaps: { rating: '4.4', url: 'https://www.google.com/maps/search/?api=1&query=貝だし麺きた田' } },
         { name: '京都塔外觀拍照', icon: '🗼', type: '景點', stay: 30, travel: 5 },
         { name: 'AEON KYOTO 採買', icon: '🛒', type: '商場', stay: 90, travel: 0 },
         { name: '回飯店休息', icon: '🏨', type: '住宿', stay: 0, travel: 0 }
@@ -565,7 +626,9 @@ const DEFAULT_DATA = {
         { name: '下山到鞍馬車站', icon: '🚶', type: '景點', stay: 15, travel: 0, note: '' },
         { name: '鞍馬→出町柳→三條京阪', icon: '🚆', type: '交通', stay: 55, travel: 0, note: '叡山電車 30 分+京阪 10 分' },
         { name: 'Hotel Legasta Check-in', icon: '🏨', type: '住宿', stay: 50, travel: 30, note: '拿行李、放好' },
-        { name: 'Grill 小寶 蛋包飯', icon: '🍳', type: '食物', stay: 90, travel: 0, note: '米其林必比登推介 ⭐' },
+        { name: 'Grill 小寶 蛋包飯', icon: '🍳', type: '食物', stay: 90, travel: 0, note: '米其林必比登推介 ⭐',
+          tabelog: { rating: '3.69', url: 'https://tabelog.com/kyoto/A2601/A260301/26000183/' },
+          gmaps: { rating: '4.2', url: 'https://www.google.com/maps/search/?api=1&query=Grill小宝' } },
         { name: '回飯店休息', icon: '🏨', type: '住宿', stay: 0, travel: 0, note: '' }
       ]
     },
@@ -573,10 +636,14 @@ const DEFAULT_DATA = {
       name: 'Day 6 中京豚骨日 (8/12 三)',
       stops: [
         { name: 'BREAD,ESPRESSO & 京都本店', icon: '🥐', type: '飲品', stay: 90, travel: 30 },
-        { name: '天下一品 本店 ⭐⭐', icon: '🍜', type: '食物', stay: 90, travel: 30 },
+        { name: '天下一品 本店 ⭐⭐', icon: '🍜', type: '食物', stay: 90, travel: 30,
+          tabelog: { rating: '3.55', url: 'https://tabelog.com/kyoto/A2601/A260403/26000150/' },
+          gmaps: { rating: '3.9', url: 'https://www.google.com/maps/search/?api=1&query=天下一品+総本店' } },
         { name: '二條城', icon: '🏯', type: '景點', stay: 120, travel: 15 },
         { name: 'Coffee-kan 錦高倉店', icon: '☕', type: '飲品', stay: 60, travel: 15 },
-        { name: 'Ramen Uroko 三條店 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 15 },
+        { name: 'Ramen Uroko 三條店 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 15,
+          tabelog: { rating: '3.71', url: 'https://tabelog.com/kyoto/A2601/A260301/26023651/' },
+          gmaps: { rating: '4.6', url: 'https://www.google.com/maps/search/?api=1&query=ラーメン+うろこ' } },
         { name: '木屋町夜街散步', icon: '🌃', type: '景點', stay: 60, travel: 0 }
       ]
     },
@@ -584,10 +651,14 @@ const DEFAULT_DATA = {
       name: 'Day 7 雞白湯日 (8/13 四)',
       stops: [
         { name: 'Dining 603 貝果早餐', icon: '🥯', type: '飲品', stay: 60, travel: 30 },
-        { name: 'Jun 三本木雞白湯 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 20 },
+        { name: 'Jun 三本木雞白湯 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 20,
+          tabelog: { rating: '3.66', url: 'https://tabelog.com/kyoto/A2601/A260301/26032826/' },
+          gmaps: { rating: '4.5', url: 'https://www.google.com/maps/search/?api=1&query=麺屋Jun' } },
         { name: '京都御苑 + 御所散步', icon: '🌳', type: '景點', stay: 120, travel: 20 },
         { name: '滔々と 古民家咖啡', icon: '☕', type: '飲品', stay: 60, travel: 20 },
-        { name: '蛇目屋 米其林 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 0 }
+        { name: '蛇目屋 米其林 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 0,
+          tabelog: { rating: '3.62', url: 'https://tabelog.com/kyoto/A2601/A260201/26025937/' },
+          gmaps: { rating: '4.1', url: 'https://www.google.com/maps/search/?api=1&query=蛇の目+京都' } }
       ]
     },
     8: {
@@ -595,12 +666,15 @@ const DEFAULT_DATA = {
       stops: [
         { name: '2/7 kitchen 可頌早餐', icon: '🥐', type: '飲品', stay: 60, travel: 15 },
         { name: '高台寺 + 寧寧之道', icon: '⛩️', type: '景點', stay: 90, travel: 10 },
-        { name: 'Torichu 雞湯麵 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 10 },
+        { name: 'Torichu 雞湯麵 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 10,
+          tabelog: { rating: '3.78', url: 'https://tabelog.com/kyoto/A2601/A260301/26025013/' },
+          gmaps: { rating: '4.7', url: 'https://www.google.com/maps/search/?api=1&query=鳥忠+京都+祇園' } },
         { name: '安井金比羅宮', icon: '⛩️', type: '景點', stay: 30, travel: 15 },
         { name: '辻利茶寮 抹茶', icon: '🍵', type: '甜點', stay: 60, travel: 30 },
         { name: 'JR Haruka 京都→臨空城', icon: '🚆', type: '交通', stay: 75, travel: 5 },
         { name: 'Hotel Odysis Check-in', icon: '🏨', type: '住宿', stay: 30, travel: 5 },
-        { name: 'One Calbi 燒肉吃到飽 ⭐', icon: '🥩', type: '食物', stay: 120, travel: 5 },
+        { name: 'One Calbi 燒肉吃到飽 ⭐', icon: '🥩', type: '食物', stay: 120, travel: 5,
+          gmaps: { rating: '4.1', url: 'https://www.google.com/maps/search/?api=1&query=One+Calbi+りんくう' } },
         { name: '整理行李 + 早睡', icon: '🧳', type: '住宿', stay: 0, travel: 0 }
       ]
     },
@@ -619,7 +693,7 @@ const DEFAULT_DATA = {
 };
 
 // 狀態
-const DATA_VERSION = 'v2.1'; // 改版本號會強制重置（加了 note 欄位）
+const DATA_VERSION = 'v2.3'; // 改版本號會強制重置（加了 tabelog + gmaps 欄位）
 let state = loadState();
 let currentDay = 1;
 let saveTimeout = null;
@@ -633,14 +707,29 @@ function loadState() {
       return JSON.parse(saved);
     }
     if (saved && savedVersion !== DATA_VERSION) {
-      // 舊版本資料：保留時間設定但補上 note 欄位
+      // 舊版本資料：保留時間設定但補上缺的欄位
       try {
         const old = JSON.parse(saved);
         if (old.days) {
           Object.values(old.days).forEach(day => {
             if (day.stops) {
-              day.stops.forEach(s => { if (!('note' in s)) s.note = ''; });
+              day.stops.forEach(s => {
+                if (!('note' in s)) s.note = '';
+                // tabelog / gmaps 欄位若不存在，會由預設資料補上 (從 DEFAULT_DATA 找對應 stop name)
+              });
             }
+          });
+          // 試圖從 DEFAULT_DATA merge 評分資料（若 stop 名稱對得上）
+          Object.keys(old.days).forEach(dayNum => {
+            const def = DEFAULT_DATA.days[dayNum];
+            if (!def) return;
+            old.days[dayNum].stops.forEach(s => {
+              const match = def.stops.find(d => d.name === s.name);
+              if (match) {
+                if (match.tabelog && !s.tabelog) s.tabelog = match.tabelog;
+                if (match.gmaps && !s.gmaps) s.gmaps = match.gmaps;
+              }
+            });
           });
           return old;
         }
@@ -778,6 +867,8 @@ function renderDay() {
         <div>結束</div>
         <div>地點</div>
         <div>備註</div>
+        <div>Tabelog</div>
+        <div>Maps</div>
         <div>停留(分)</div>
         <div>移動(分)</div>
         <div></div>
@@ -823,6 +914,12 @@ function renderStops(computed) {
       </div>
       <div class="stop-note">
         <input type="text" value="${escapeHtml(stop.note || '')}" data-field="note" data-idx="${idx}" placeholder="備註...">
+      </div>
+      <div class="stop-rating">
+        ${renderRatingLink(stop, 'tabelog', idx)}
+      </div>
+      <div class="stop-rating">
+        ${renderRatingLink(stop, 'gmaps', idx)}
       </div>
       <div class="stop-num-input">
         <input type="number" value="${stop.stay || 0}" data-field="stay" data-idx="${idx}" min="0" placeholder="0">
@@ -1034,10 +1131,91 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
+// 渲染 Tabelog / Google Maps 評分連結
+function renderRatingLink(stop, kind, idx) {
+  const data = stop[kind] || {};
+  const rating = data.rating;
+  const url = data.url;
+  
+  if (rating && url) {
+    return `<a class="rating-link ${kind}" href="${escapeHtml(url)}" target="_blank" rel="noopener" data-action="edit-rating" data-kind="${kind}" data-idx="${idx}">
+      <span class="star-icon">★</span>${escapeHtml(String(rating))}
+    </a>`;
+  }
+  // 空格子：點擊可編輯
+  const label = kind === 'tabelog' ? '+ 食log' : '+ Maps';
+  return `<a class="rating-link empty" data-action="edit-rating" data-kind="${kind}" data-idx="${idx}" title="點擊新增 ${kind === 'tabelog' ? 'Tabelog' : 'Google Maps'} 評分和連結">${label}</a>`;
+}
+
+// 點擊評分連結 → 編輯/開啟
+function handleRatingClick(e) {
+  const target = e.target.closest('[data-action="edit-rating"]');
+  if (!target) return;
+  
+  const kind = target.dataset.kind;
+  const idx = Number(target.dataset.idx);
+  const stop = state.days[currentDay].stops[idx];
+  const data = stop[kind] || {};
+  
+  // 如果有資料且有 url，且使用者按住 Shift 才不開啟改編輯
+  // 預設行為：點擊 → 已存在的話就開連結（HTML <a> 自然行為）
+  // 編輯：右鍵 / 雙擊
+  // 但空欄位點擊一定要 prompt 輸入
+  
+  const isEmpty = !data.rating || !data.url;
+  
+  // 空格子：左鍵點擊就 prompt
+  if (isEmpty) {
+    e.preventDefault();
+    promptRatingEdit(idx, kind);
+    return;
+  }
+  
+  // 有資料：左鍵維持原本的開連結行為（讓 <a> 跳出）
+  // 右鍵編輯（contextmenu 處理）
+}
+
+function handleRatingContextMenu(e) {
+  const target = e.target.closest('[data-action="edit-rating"]');
+  if (!target) return;
+  e.preventDefault();
+  const kind = target.dataset.kind;
+  const idx = Number(target.dataset.idx);
+  promptRatingEdit(idx, kind);
+}
+
+function promptRatingEdit(idx, kind) {
+  const stop = state.days[currentDay].stops[idx];
+  const data = stop[kind] || {};
+  const label = kind === 'tabelog' ? 'Tabelog' : 'Google Maps';
+  
+  const rating = prompt(`${label} 評分（例如 4.2，留空可清除）：`, data.rating || '');
+  if (rating === null) return; // 取消
+  
+  if (!rating.trim()) {
+    // 清除
+    delete stop[kind];
+    saveState();
+    renderStops(computeSchedule(currentDay));
+    return;
+  }
+  
+  const url = prompt(`${label} 連結網址：`, data.url || '');
+  if (url === null) return;
+  
+  stop[kind] = { rating: rating.trim(), url: url.trim() };
+  saveState();
+  renderStops(computeSchedule(currentDay));
+}
+
 function render() {
   renderDayTabs();
   renderDay();
 }
+
+// 全域點擊事件（評分編輯）只綁一次
+document.addEventListener('click', handleRatingClick);
+document.addEventListener('contextmenu', handleRatingContextMenu);
 
 render();
 </script>
