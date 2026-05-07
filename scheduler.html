@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京都 9 天 智慧排程器 · Auto-Scheduler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f5f0e6;
+  --paper-dark: #ebe3d3;
+  --paper-light: #faf6ed;
+  --ink: #2a2520;
+  --ink-soft: #4a3f35;
+  --ink-faint: #8a7d6e;
+  --vermillion: #c8463c;
+  --vermillion-dark: #9d3329;
+  --indigo: #2d4a5c;
+  --gold: #b8893a;
+  --moss: #6b7e3f;
+  --line: rgba(42, 37, 32, 0.12);
+  --line-soft: rgba(42, 37, 32, 0.06);
+  --green-ok: #5b8a3a;
+  --warn: #d68f3a;
+  --red: #c8463c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* TOOLBAR */
+.toolbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink); color: var(--paper);
+  padding: 10px 16px;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  border-bottom: 2px solid var(--vermillion);
+}
+.toolbar h1 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 16px; font-weight: 600;
+  margin-right: auto;
+}
+.toolbar h1 .sub {
+  font-size: 11px; color: var(--ink-faint);
+  margin-left: 8px; font-weight: 400;
+}
+.btn {
+  padding: 5px 12px; font-size: 12px;
+  background: transparent; color: var(--paper);
+  border: 1px solid rgba(245, 240, 230, 0.3);
+  border-radius: 2px; cursor: pointer;
+  transition: all 0.15s; font-family: inherit;
+}
+.btn:hover { background: rgba(245, 240, 230, 0.1); border-color: var(--paper); }
+.btn.primary { background: var(--vermillion); border-color: var(--vermillion); }
+.btn.primary:hover { background: var(--vermillion-dark); border-color: var(--vermillion-dark); }
+.btn.ghost { color: var(--ink-faint); border-color: transparent; }
+.btn.ghost:hover { color: var(--paper); }
+.save-status {
+  font-size: 11px; color: var(--ink-faint);
+  margin-left: 8px;
+}
+.save-status.saved { color: var(--green-ok); }
+
+/* DAY TABS */
+.day-tabs {
+  position: sticky; top: 47px; z-index: 90;
+  background: var(--paper-dark);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.day-tabs-inner {
+  display: flex; gap: 0;
+  padding: 0 16px; min-width: max-content;
+  max-width: 1400px; margin: 0 auto;
+}
+.day-tab {
+  padding: 10px 14px; cursor: pointer; user-select: none;
+  font-size: 13px; color: var(--ink-faint);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.day-tab:hover { color: var(--ink); }
+.day-tab.active {
+  color: var(--vermillion);
+  border-bottom-color: var(--vermillion);
+  font-weight: 600;
+}
+.day-tab .day-meta {
+  font-size: 10px; color: var(--ink-faint);
+  display: block; margin-top: 1px;
+}
+.day-tab.active .day-meta { color: var(--vermillion); opacity: 0.8; }
+
+/* MAIN CONTAINER */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.day-header {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  background: var(--paper-light);
+  border-left: 3px solid var(--vermillion);
+}
+.day-header h2 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 18px; font-weight: 600;
+}
+.day-header .stats {
+  margin-left: auto;
+  font-size: 11px; color: var(--ink-faint);
+  font-family: 'JetBrains Mono', monospace;
+}
+.day-header .stats span { margin-left: 12px; }
+.day-header .stats .stat-val { color: var(--ink); font-weight: 600; }
+
+/* DAY START INPUT */
+.day-start-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: var(--paper-light);
+  border: 1px dashed var(--line);
+  border-radius: 4px;
+}
+.day-start-row label {
+  font-size: 12px; color: var(--ink-soft);
+  font-weight: 500;
+}
+.day-start-row input[type="time"] {
+  padding: 4px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 3px;
+  color: var(--ink);
+}
+.day-start-row .hint {
+  font-size: 10px; color: var(--ink-faint);
+  margin-left: auto;
+}
+
+/* SCHEDULE TABLE */
+.schedule {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.schedule-header,
+.stop-row {
+  display: grid;
+  grid-template-columns: 28px 54px 54px minmax(180px, 1.2fr) minmax(160px, 1fr) 48px 48px 28px;
+  gap: 0;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.schedule-header {
+  background: var(--paper-dark);
+  font-size: 10px; color: var(--ink-faint);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--line);
+}
+.schedule-header > div {
+  padding: 8px 6px;
+  text-align: center;
+}
+.schedule-header > div:nth-child(4),
+.schedule-header > div:nth-child(5) { text-align: left; padding-left: 12px; }
+
+.stop-row {
+  cursor: grab;
+  transition: background 0.1s;
+}
+.stop-row:hover { background: var(--paper-light); }
+.stop-row.dragging { opacity: 0.4; }
+.stop-row.drag-over-top {
+  border-top: 2px solid var(--vermillion);
+}
+.stop-row.drag-over-bottom {
+  border-bottom: 2px solid var(--vermillion);
+}
+
+.stop-row > div {
+  padding: 6px 4px;
+  display: flex; align-items: center;
+  border-right: 1px solid var(--line-soft);
+}
+.stop-row > div:last-child { border-right: none; }
+
+.stop-handle {
+  justify-content: center;
+  color: var(--ink-faint);
+  font-size: 14px;
+  cursor: grab;
+  user-select: none;
+}
+.stop-handle:active { cursor: grabbing; }
+
+.stop-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.stop-time.start { color: var(--indigo); font-weight: 600; }
+.stop-time.end { color: var(--ink-faint); }
+
+.stop-name {
+  padding-left: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+.stop-name input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  padding: 2px 0;
+  outline: none;
+}
+.stop-name input:focus { background: var(--paper-light); padding: 2px 4px; margin: 0 -4px; }
+.stop-name .icon { font-size: 14px; margin-right: 4px; flex-shrink: 0; }
+.stop-name .name-row { display: flex; align-items: center; width: 100%; min-width: 0; }
+
+/* 備註欄 */
+.stop-note {
+  padding: 6px 12px;
+  align-items: center;
+  min-width: 0;
+}
+.stop-note input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: 2px 0;
+  outline: none;
+  font-style: italic;
+}
+.stop-note input::placeholder {
+  color: var(--ink-faint);
+  opacity: 0.5;
+  font-style: normal;
+}
+.stop-note input:focus {
+  background: var(--paper-light);
+  padding: 2px 4px;
+  margin: 0 -4px;
+  font-style: normal;
+}
+
+.stop-num-input {
+  justify-content: center;
+}
+.stop-num-input input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-align: center;
+  color: var(--ink);
+  padding: 2px;
+  outline: none;
+  border-radius: 2px;
+}
+.stop-num-input input:focus {
+  background: var(--paper-light);
+  box-shadow: inset 0 0 0 1px var(--vermillion);
+}
+.stop-num-input.travel input { color: var(--moss); font-weight: 500; }
+.stop-num-input.travel input::placeholder { color: var(--ink-faint); opacity: 0.5; }
+
+.stop-delete {
+  justify-content: center;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 13px;
+  transition: color 0.1s;
+}
+.stop-delete:hover { color: var(--red); }
+
+/* ADD ROW */
+.add-row {
+  padding: 8px 14px;
+  display: flex; gap: 8px; align-items: center;
+  background: var(--paper-light);
+  border-top: 1px solid var(--line);
+}
+.add-row .btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  color: var(--ink-soft);
+  border-color: var(--line);
+}
+.add-row .btn:hover {
+  color: var(--vermillion);
+  border-color: var(--vermillion);
+  background: white;
+}
+
+/* HELP PANEL */
+.help-panel {
+  position: fixed;
+  bottom: 12px; right: 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  max-width: 240px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  z-index: 50;
+  display: none;
+}
+.help-panel.show { display: block; }
+.help-panel h4 {
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: var(--vermillion);
+}
+.help-panel kbd {
+  background: rgba(255,255,255,0.1);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+.help-toggle {
+  position: fixed;
+  bottom: 12px; right: 12px;
+  width: 32px; height: 32px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 51;
+  font-weight: 600;
+}
+.help-toggle.hidden { display: none; }
+
+/* MOBILE */
+@media (max-width: 720px) {
+  .schedule-header,
+  .stop-row {
+    grid-template-columns: 24px 50px minmax(140px, 1fr) minmax(100px, 0.8fr) 44px 44px 24px;
+  }
+  /* 隱藏「結束」欄 */
+  .schedule-header > div:nth-child(3),
+  .stop-row > div:nth-child(3) {
+    display: none;
+  }
+  .toolbar h1 .sub { display: none; }
+  main { padding: 10px; }
+  .stop-note input { font-size: 11px; }
+}
+
+/* TYPE COLORS */
+.type-食物 .icon, .type-飲品 .icon { color: var(--gold); }
+.type-景點 .icon { color: var(--indigo); }
+.type-住宿 .icon { color: var(--ink-soft); }
+.type-商場 .icon { color: var(--moss); }
+
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <h1>智慧排程器 <span class="sub">京都 9 天 · 自動算時間</span></h1>
+  <span class="save-status" id="saveStatus">已自動儲存</span>
+  <button class="btn ghost" id="resetBtn" title="重置成預設值">↺ 重置</button>
+  <button class="btn ghost" id="exportBtn">↓ 匯出 JSON</button>
+  <button class="btn primary" id="importBtn">↑ 匯入 JSON</button>
+  <input type="file" id="importFile" accept=".json" style="display:none">
+</div>
+
+<!-- DAY TABS -->
+<div class="day-tabs">
+  <div class="day-tabs-inner" id="dayTabs"></div>
+</div>
+
+<!-- MAIN -->
+<main id="main"></main>
+
+<!-- HELP -->
+<button class="help-toggle" id="helpToggle" title="說明">?</button>
+<div class="help-panel" id="helpPanel">
+  <h4>使用說明</h4>
+  <ul style="list-style: none; padding: 0; line-height: 1.7;">
+    <li>• 改「Day 1 開始時間」→ 整天時間自動重算</li>
+    <li>• 改任何「停留(分)」或「移動(分)」→ 後面全部跟著重算</li>
+    <li>• 拖拉 ⋮⋮ 把手調整順序</li>
+    <li>• 點 + 新增 stop / 點 × 刪除</li>
+    <li>• 全部存在瀏覽器 (localStorage)</li>
+  </ul>
+  <p style="margin-top: 8px; color: var(--ink-faint); font-size: 10px;">
+    ⏱️ 停留 = 在這個地方待多久<br>
+    🚶 移動 = 到下一個地方要多久
+  </p>
+</div>
+
+<script>
+// ============================================
+// 京都 9 天 智慧排程器
+// ============================================
+
+// 預設資料
+const DEFAULT_DATA = {
+  startTimes: {
+    1: '12:00',  // Day 1 朝馬出發
+    2: '06:00',
+    3: '06:00',
+    4: '06:00',
+    5: '06:30',
+    6: '07:00',
+    7: '07:00',
+    8: '07:00',
+    9: '04:30'
+  },
+  days: {
+    1: {
+      name: 'Day 1 抵達日 (8/7 五)',
+      stops: [
+        { name: '統聯客運 朝馬站', icon: '🚌', type: '景點', stay: 0, travel: 113, note: '台中朝馬→桃園機場' },
+        { name: '桃園機場第一航廈', icon: '✈️', type: '景點', stay: 90, travel: 170, note: '15:37 起飛' },
+        { name: '關西國際機場 KIX', icon: '🛬', type: '景點', stay: 73, travel: 43, note: '過關+ICOCA+南海空港急行' },
+        { name: '新今宮車站', icon: '🚇', type: '交通', stay: 10, travel: 5, note: '出站走 5 分到通天閣' },
+        { name: '通天閣 夜景拍照', icon: '🗼', type: '景點', stay: 20, travel: 10, note: 'Claude 新增！夜景仰角+炸串店招牌' },
+        { name: '新今宮 → 大阪車站', icon: '🚇', type: '交通', stay: 8, travel: 60, note: 'JR 大阪環狀線' },
+        { name: '大阪 → 京都車站', icon: '🚆', type: '交通', stay: 28, travel: 15, note: 'JR 新快速 28 分' },
+        { name: '飯店 Check-in (東九条)', icon: '🏨', type: '住宿', stay: 0, travel: 0, note: '隔天 06:00 出發' }
+      ]
+    },
+    2: {
+      name: 'Day 2 東山祇園 (8/8 六)',
+      stops: [
+        { name: '法觀寺 (八坂之塔)', icon: '🏯', type: '景點', stay: 17, travel: 8, note: '京都地標，早上人少' },
+        { name: '產寧坂 (三年坂)', icon: '🚶', type: '景點', stay: 10, travel: 9, note: '清晨石板路最有氣氛' },
+        { name: '清水寺', icon: '⛩️', type: '景點', stay: 60, travel: 6, note: '世界遺產' },
+        { name: '音羽之瀧', icon: '💧', type: '景點', stay: 19, travel: 68, note: '健康/學業/戀愛三選一' },
+        { name: '東山山頂公園', icon: '🏞️', type: '景點', stay: 21, travel: 5, note: '俯瞰京都全景' },
+        { name: '將軍塚青龍殿', icon: '⛩️', type: '景點', stay: 26, travel: 12, note: '大舞台超壯觀' },
+        { name: '知恩院', icon: '⛩️', type: '景點', stay: 20, travel: 6, note: '' },
+        { name: '青蓮院', icon: '⛩️', type: '景點', stay: 40, travel: 9, note: '' },
+        { name: '圓山公園', icon: '🌳', type: '景點', stay: 29, travel: 3, note: '夏天綠意可休息' },
+        { name: '京都八坂神社', icon: '⛩️', type: '景點', stay: 30, travel: 6, note: '祇園代表' },
+        { name: '鍵善良房 (和菓子)', icon: '🍡', type: '甜點', stay: 30, travel: 1, note: '300 年老店，必試葛切' },
+        { name: 'Tully\'s Coffee 祇園', icon: '☕', type: '飲品', stay: 15, travel: 3, note: 'Claude 新增！鍵善旁奶茶' },
+        { name: '花見小路通', icon: '🌸', type: '景點', stay: 20, travel: 2, note: '⚠️ 禁止追拍藝伎' },
+        { name: '祇園巽橋', icon: '🌉', type: '景點', stay: 11, travel: 2, note: '' },
+        { name: '祇園白川', icon: '🌸', type: '景點', stay: 18, travel: 7, note: '' },
+        { name: '先斗町通', icon: '🏮', type: '景點', stay: 14, travel: 11, note: '' },
+        { name: '錦市場', icon: '🏪', type: '商場', stay: 19, travel: 1, note: '京都廚房，邊吃邊買' },
+        { name: '博士章魚燒', icon: '🐙', type: '食物', stay: 16, travel: 3, note: '' },
+        { name: '神戶肉飯糰 Hiro', icon: '🍙', type: '食物', stay: 8, travel: 3, note: '' },
+        { name: '京沾麵 Tsurukame', icon: '🍜', type: '食物', stay: 60, travel: 3, note: '建議訂位 / 替代:麵匠たか松' },
+        { name: 'DAISO', icon: '🛍️', type: '商場', stay: 29, travel: 4, note: 'EVA拖鞋/雨衣/保冷貼' },
+        { name: '新京極商店街', icon: '🛍️', type: '商場', stay: 25, travel: 4, note: '' },
+        { name: 'UNIQLO Kawaramachi', icon: '👕', type: '商場', stay: 30, travel: 6, note: 'AIRism 短褲+冷感口罩' },
+        { name: '先斗町公園', icon: '🌳', type: '景點', stay: 13, travel: 7, note: '' },
+        { name: '鴨川納涼床', icon: '🌆', type: '景點', stay: 2, travel: 5, note: '夏季限定' },
+        { name: 'Mar Cafe', icon: '☕', type: '飲品', stay: 60, travel: 42, note: '飲料收尾' },
+        { name: '回飯店休息', icon: '🏨', type: '住宿', stay: 0, travel: 0, note: '' }
+      ]
+    },
+    3: {
+      name: 'Day 3 嵐山+北野 (8/9 日)',
+      stops: [
+        { name: '渡月橋', icon: '🌉', type: '景點', stay: 20, travel: 10 },
+        { name: '天龍寺 (拍門口)', icon: '⛩️', type: '景點', stay: 5, travel: 1 },
+        { name: '嵐山竹林小徑', icon: '🎋', type: '景點', stay: 31, travel: 25 },
+        { name: '嵐山公園 龜山地區 山頂展望台', icon: '🏞️', type: '景點', stay: 50, travel: 32 },
+        { name: '大河內山莊 (拍門口)', icon: '⛩️', type: '景點', stay: 2, travel: 7 },
+        { name: '常寂光寺 (拍門口)', icon: '⛩️', type: '景點', stay: 8, travel: 5 },
+        { name: '落柿舍', icon: '🏮', type: '景點', stay: 11, travel: 8 },
+        { name: '二尊院 (拍門口)', icon: '⛩️', type: '景點', stay: 5, travel: 14 },
+        { name: '祇王寺 (拍門口)', icon: '⛩️', type: '景點', stay: 6, travel: 6 },
+        { name: '嵯峨鳥居本', icon: '⛩️', type: '景點', stay: 21, travel: 4 },
+        { name: '化野念佛寺 (拍門口)', icon: '⛩️', type: '景點', stay: 5, travel: 11 },
+        { name: '愛宕念佛寺', icon: '⛩️', type: '景點', stay: 25, travel: 11 },
+        { name: '可樂餅 (午餐)', icon: '🍟', type: '食物', stay: 20, travel: 35 },
+        { name: '粟餅所 澤屋 (紅豆糰子)', icon: '🥮', type: '甜點', stay: 20, travel: 7 },
+        { name: '北野天滿宮', icon: '⛩️', type: '景點', stay: 47, travel: 6 },
+        { name: '平野神社', icon: '⛩️', type: '景點', stay: 27, travel: 17 },
+        { name: '金閣寺', icon: '🏯', type: '景點', stay: 39, travel: 26 },
+        { name: '龍安寺 (拍門口)', icon: '⛩️', type: '景點', stay: 6, travel: 51 },
+        { name: 'Kitada (貝だし麵 晚餐)', icon: '🍜', type: '食物', stay: 60, travel: 0 },
+        { name: '京都塔外觀拍照', icon: '🗼', type: '景點', stay: 30, travel: 5 },
+        { name: 'AEON KYOTO 採買', icon: '🛒', type: '商場', stay: 90, travel: 0 },
+        { name: '回飯店休息', icon: '🏨', type: '住宿', stay: 0, travel: 0 }
+      ]
+    },
+    4: {
+      name: 'Day 4 伏見稻荷+宇治 (8/10 一)',
+      stops: [
+        { name: '伏見稻荷大社 正殿', icon: '⛩️', type: '景點', stay: 12, travel: 4, note: '⚠️ 8月超熱，2L水！' },
+        { name: '千本鳥居', icon: '⛩️', type: '景點', stay: 16, travel: 2, note: '' },
+        { name: '重輕石', icon: '🪨', type: '景點', stay: 10, travel: 2, note: '輕於預期則願望成真' },
+        { name: '伏見稻荷 竹林', icon: '🎋', type: '景點', stay: 8, travel: 3, note: '' },
+        { name: '長起松', icon: '🌲', type: '景點', stay: 5, travel: 7, note: '' },
+        { name: '奧社奉拜所', icon: '⛩️', type: '景點', stay: 20, travel: 11, note: '' },
+        { name: '熊鷹社', icon: '⛩️', type: '景點', stay: 11, travel: 5, note: '' },
+        { name: '三之辻', icon: '⛩️', type: '景點', stay: 10, travel: 8, note: '' },
+        { name: '四之辻 展望台 (折返!)', icon: '🏞️', type: '景點', stay: 30, travel: 0, note: '🎯 Claude 建議折返！山頂無展望' },
+        { name: '眼力社', icon: '⛩️', type: '景點', stay: 8, travel: 2, note: '下山順路' },
+        { name: '御劒社', icon: '⛩️', type: '景點', stay: 12, travel: 17, note: '' },
+        { name: '下山到稻荷站', icon: '🚶', type: '景點', stay: 0, travel: 94, note: '' },
+        { name: 'NEZAMEYA 豆皮壽司外帶', icon: '🍣', type: '食物', stay: 5, travel: 0, note: '🆕 不排隊！替代地雞家心' },
+        { name: '紫式部石像', icon: '✍️', type: '景點', stay: 14, travel: 6, note: '宇治公園邊吃午餐' },
+        { name: '平等院 鳳凰堂', icon: '🏯', type: '景點', stay: 60, travel: 6, note: '10円硬幣建築' },
+        { name: '宇治公園', icon: '🌾', type: '景點', stay: 23, travel: 3, note: '' },
+        { name: '朝霧橋', icon: '🌉', type: '景點', stay: 19, travel: 4, note: '' },
+        { name: '宇治神社 (兔子神社)', icon: '🐰', type: '景點', stay: 14, travel: 7, note: '' },
+        { name: '宇治上神社', icon: '⛩️', type: '景點', stay: 23, travel: 9, note: '日本最古老神社建築' },
+        { name: '伊藤久右衛門 茶房', icon: '🍵', type: '飲品', stay: 90, travel: 7, note: '抹茶蕎麥麵+聖代' },
+        { name: '宇治站 → AEON', icon: '🚇', type: '交通', stay: 38, travel: 0, note: '' },
+        { name: 'AEON MALL 蓋章', icon: '📬', type: '商場', stay: 60, travel: 14, note: '京都限定免費活動' },
+        { name: '回飯店休息', icon: '🏨', type: '住宿', stay: 0, travel: 0, note: '明天搬家整理行李' }
+      ]
+    },
+    5: {
+      name: 'Day 5 換飯店+貴船鞍馬 (8/11 二)',
+      stops: [
+        { name: '退房出發', icon: '🏨', type: '住宿', stay: 30, travel: 0, note: '行李帶走，走路到附近景點' },
+        { name: '南禪寺 + 水路閣', icon: '⛩️', type: '景點', stay: 30, travel: 0, note: '🆕 早晨無人超好拍 ⭐⭐⭐⭐⭐' },
+        { name: '永觀堂外觀', icon: '⛩️', type: '景點', stay: 15, travel: 15, note: '🆕 路過拍照' },
+        { name: '平安神宮 大鳥居', icon: '⛩️', type: '景點', stay: 30, travel: 15, note: '🆕 京都最大鳥居' },
+        { name: 'Hotel Legasta 寄行李', icon: '🗄️', type: '置物', stay: 15, travel: 0, note: '打電話確認 09:00 開放寄' },
+        { name: '岡崎神社 (兔子神社)', icon: '🐰', type: '景點', stay: 35, travel: 10, note: '09:00 開門' },
+        { name: '三條京阪 → 出町柳', icon: '🚇', type: '交通', stay: 8, travel: 12, note: '京阪電車 8 分' },
+        { name: '出町柳 → 貴船口 (kirara)', icon: '🚆', type: '交通', stay: 28, travel: 2, note: '叡山電車觀景車超推 ⭐' },
+        { name: '貴船口 → 貴船神社 (巴士)', icon: '🚌', type: '交通', stay: 5, travel: 5, note: '' },
+        { name: '貴船神社', icon: '⛩️', type: '景點', stay: 60, travel: 0, note: '本宮+結社+奧宮' },
+        { name: '貴船川床料理午餐', icon: '🍱', type: '食物', stay: 90, travel: 0, note: '⚠️ 夏季限定，需提前 1 週預約' },
+        { name: '貴船→鞍馬寺 健行', icon: '⛰️', type: '景點', stay: 120, travel: 0, note: '木の根道+大杉權現' },
+        { name: '鞍馬寺本殿', icon: '⛩️', type: '景點', stay: 30, travel: 0, note: '' },
+        { name: '下山到鞍馬車站', icon: '🚶', type: '景點', stay: 15, travel: 0, note: '' },
+        { name: '鞍馬→出町柳→三條京阪', icon: '🚆', type: '交通', stay: 55, travel: 0, note: '叡山電車 30 分+京阪 10 分' },
+        { name: 'Hotel Legasta Check-in', icon: '🏨', type: '住宿', stay: 50, travel: 30, note: '拿行李、放好' },
+        { name: 'Grill 小寶 蛋包飯', icon: '🍳', type: '食物', stay: 90, travel: 0, note: '米其林必比登推介 ⭐' },
+        { name: '回飯店休息', icon: '🏨', type: '住宿', stay: 0, travel: 0, note: '' }
+      ]
+    },
+    6: {
+      name: 'Day 6 中京豚骨日 (8/12 三)',
+      stops: [
+        { name: 'BREAD,ESPRESSO & 京都本店', icon: '🥐', type: '飲品', stay: 90, travel: 30 },
+        { name: '天下一品 本店 ⭐⭐', icon: '🍜', type: '食物', stay: 90, travel: 30 },
+        { name: '二條城', icon: '🏯', type: '景點', stay: 120, travel: 15 },
+        { name: 'Coffee-kan 錦高倉店', icon: '☕', type: '飲品', stay: 60, travel: 15 },
+        { name: 'Ramen Uroko 三條店 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 15 },
+        { name: '木屋町夜街散步', icon: '🌃', type: '景點', stay: 60, travel: 0 }
+      ]
+    },
+    7: {
+      name: 'Day 7 雞白湯日 (8/13 四)',
+      stops: [
+        { name: 'Dining 603 貝果早餐', icon: '🥯', type: '飲品', stay: 60, travel: 30 },
+        { name: 'Jun 三本木雞白湯 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 20 },
+        { name: '京都御苑 + 御所散步', icon: '🌳', type: '景點', stay: 120, travel: 20 },
+        { name: '滔々と 古民家咖啡', icon: '☕', type: '飲品', stay: 60, travel: 20 },
+        { name: '蛇目屋 米其林 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 0 }
+      ]
+    },
+    8: {
+      name: 'Day 8 高台寺+大阪 (8/14 五)',
+      stops: [
+        { name: '2/7 kitchen 可頌早餐', icon: '🥐', type: '飲品', stay: 60, travel: 15 },
+        { name: '高台寺 + 寧寧之道', icon: '⛩️', type: '景點', stay: 90, travel: 10 },
+        { name: 'Torichu 雞湯麵 ⭐', icon: '🍜', type: '食物', stay: 90, travel: 10 },
+        { name: '安井金比羅宮', icon: '⛩️', type: '景點', stay: 30, travel: 15 },
+        { name: '辻利茶寮 抹茶', icon: '🍵', type: '甜點', stay: 60, travel: 30 },
+        { name: 'JR Haruka 京都→臨空城', icon: '🚆', type: '交通', stay: 75, travel: 5 },
+        { name: 'Hotel Odysis Check-in', icon: '🏨', type: '住宿', stay: 30, travel: 5 },
+        { name: 'One Calbi 燒肉吃到飽 ⭐', icon: '🥩', type: '食物', stay: 120, travel: 5 },
+        { name: '整理行李 + 早睡', icon: '🧳', type: '住宿', stay: 0, travel: 0 }
+      ]
+    },
+    9: {
+      name: 'Day 9 樂桃返程 (8/15 六)',
+      stops: [
+        { name: '起床 + 退房準備', icon: '⏰', type: '住宿', stay: 30, travel: 0 },
+        { name: '飯店大廳 + 接駁巴士', icon: '🚌', type: '交通', stay: 5, travel: 25 },
+        { name: 'KIX T2 抵達', icon: '✈️', type: '景點', stay: 20, travel: 0 },
+        { name: 'Check-in + 安檢 + 出境', icon: '🛂', type: '景點', stay: 80, travel: 0 },
+        { name: '登機門候機', icon: '🚪', type: '景點', stay: 40, travel: 0 },
+        { name: '樂桃起飛 → 桃園', icon: '✈️', type: '景點', stay: 180, travel: 0 }
+      ]
+    }
+  }
+};
+
+// 狀態
+const DATA_VERSION = 'v2.1'; // 改版本號會強制重置（加了 note 欄位）
+let state = loadState();
+let currentDay = 1;
+let saveTimeout = null;
+
+// localStorage
+function loadState() {
+  try {
+    const saved = localStorage.getItem('kyoto-scheduler-v2');
+    const savedVersion = localStorage.getItem('kyoto-scheduler-version');
+    if (saved && savedVersion === DATA_VERSION) {
+      return JSON.parse(saved);
+    }
+    if (saved && savedVersion !== DATA_VERSION) {
+      // 舊版本資料：保留時間設定但補上 note 欄位
+      try {
+        const old = JSON.parse(saved);
+        if (old.days) {
+          Object.values(old.days).forEach(day => {
+            if (day.stops) {
+              day.stops.forEach(s => { if (!('note' in s)) s.note = ''; });
+            }
+          });
+          return old;
+        }
+      } catch (e) {}
+    }
+  } catch (e) { console.error(e); }
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+
+function saveState() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    try {
+      localStorage.setItem('kyoto-scheduler-v2', JSON.stringify(state));
+      localStorage.setItem('kyoto-scheduler-version', DATA_VERSION);
+      const status = document.getElementById('saveStatus');
+      status.textContent = '✓ 已自動儲存';
+      status.classList.add('saved');
+      setTimeout(() => status.classList.remove('saved'), 1500);
+    } catch (e) { console.error(e); }
+  }, 300);
+}
+
+// 時間運算
+function timeToMinutes(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function minutesToTime(min) {
+  // 處理跨日（>= 24:00）
+  const m = ((min % (24*60)) + 24*60) % (24*60);
+  const h = Math.floor(m / 60);
+  const mm = m % 60;
+  return `${String(h).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+}
+
+function formatDuration(totalMin) {
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  if (h === 0) return `${m}分`;
+  if (m === 0) return `${h}時`;
+  return `${h}時${m}分`;
+}
+
+// 計算每個 stop 的開始/結束時間
+function computeSchedule(dayNum) {
+  const day = state.days[dayNum];
+  const startStr = state.startTimes[dayNum] || '06:00';
+  let cursor = timeToMinutes(startStr);
+  
+  return day.stops.map((stop, idx) => {
+    const start = cursor;
+    const end = start + (stop.stay || 0);
+    cursor = end + (stop.travel || 0);
+    return {
+      ...stop,
+      idx,
+      startTime: minutesToTime(start),
+      endTime: minutesToTime(end),
+      startMin: start,
+      endMin: end
+    };
+  });
+}
+
+// 統計：當天總時長
+function getDayStats(dayNum) {
+  const computed = computeSchedule(dayNum);
+  if (computed.length === 0) return { totalStay: 0, totalTravel: 0, totalTime: 0, endTime: '—' };
+  
+  const totalStay = computed.reduce((s, c) => s + (c.stay || 0), 0);
+  const totalTravel = computed.reduce((s, c) => s + (c.travel || 0), 0);
+  const lastEnd = computed[computed.length - 1].endMin;
+  const firstStart = computed[0].startMin;
+  
+  return {
+    totalStay,
+    totalTravel,
+    totalTime: lastEnd - firstStart,
+    endTime: minutesToTime(lastEnd),
+    stopCount: computed.length
+  };
+}
+
+// === RENDER ===
+function renderDayTabs() {
+  const tabs = document.getElementById('dayTabs');
+  tabs.innerHTML = '';
+  
+  Object.keys(state.days).forEach(dayNum => {
+    const stats = getDayStats(dayNum);
+    const tab = document.createElement('div');
+    tab.className = 'day-tab' + (Number(dayNum) === currentDay ? ' active' : '');
+    tab.innerHTML = `
+      Day ${dayNum}
+      <span class="day-meta">${stats.stopCount} stops · ${formatDuration(stats.totalTime)}</span>
+    `;
+    tab.onclick = () => {
+      currentDay = Number(dayNum);
+      render();
+    };
+    tabs.appendChild(tab);
+  });
+}
+
+function renderDay() {
+  const main = document.getElementById('main');
+  const day = state.days[currentDay];
+  if (!day) return;
+  
+  const stats = getDayStats(currentDay);
+  const computed = computeSchedule(currentDay);
+  
+  main.innerHTML = `
+    <div class="day-header">
+      <h2>${day.name}</h2>
+      <div class="stats">
+        <span>停留 <span class="stat-val">${formatDuration(stats.totalStay)}</span></span>
+        <span>移動 <span class="stat-val">${formatDuration(stats.totalTravel)}</span></span>
+        <span>結束 <span class="stat-val">${stats.endTime}</span></span>
+      </div>
+    </div>
+
+    <div class="day-start-row">
+      <label for="startTime">Day ${currentDay} 開始時間</label>
+      <input type="time" id="startTime" value="${state.startTimes[currentDay] || '06:00'}">
+      <span class="hint">改這裡 → 整天時間自動重算</span>
+    </div>
+
+    <div class="schedule">
+      <div class="schedule-header">
+        <div></div>
+        <div>開始</div>
+        <div>結束</div>
+        <div>地點</div>
+        <div>備註</div>
+        <div>停留(分)</div>
+        <div>移動(分)</div>
+        <div></div>
+      </div>
+      <div id="stopsList"></div>
+      <div class="add-row">
+        <button class="btn" id="addStopBtn">+ 新增 stop</button>
+        <span style="font-size:10px; color:var(--ink-faint); margin-left:auto;">提示：拖拉左側 ⋮⋮ 可調整順序</span>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('startTime').addEventListener('change', e => {
+    state.startTimes[currentDay] = e.target.value;
+    saveState();
+    render();
+  });
+  
+  document.getElementById('addStopBtn').addEventListener('click', addStop);
+  
+  renderStops(computed);
+}
+
+function renderStops(computed) {
+  const list = document.getElementById('stopsList');
+  list.innerHTML = '';
+  
+  computed.forEach((stop, idx) => {
+    const row = document.createElement('div');
+    row.className = `stop-row type-${stop.type || ''}`;
+    row.draggable = true;
+    row.dataset.idx = idx;
+    
+    row.innerHTML = `
+      <div class="stop-handle" title="拖拉調整順序">⋮⋮</div>
+      <div class="stop-time start">${stop.startTime}</div>
+      <div class="stop-time end">${stop.endTime}</div>
+      <div class="stop-name">
+        <div class="name-row">
+          <span class="icon">${stop.icon || '📍'}</span>
+          <input type="text" value="${escapeHtml(stop.name)}" data-field="name" data-idx="${idx}" placeholder="地點名稱">
+        </div>
+      </div>
+      <div class="stop-note">
+        <input type="text" value="${escapeHtml(stop.note || '')}" data-field="note" data-idx="${idx}" placeholder="備註...">
+      </div>
+      <div class="stop-num-input">
+        <input type="number" value="${stop.stay || 0}" data-field="stay" data-idx="${idx}" min="0" placeholder="0">
+      </div>
+      <div class="stop-num-input travel">
+        <input type="number" value="${stop.travel || 0}" data-field="travel" data-idx="${idx}" min="0" placeholder="0">
+      </div>
+      <div class="stop-delete" data-idx="${idx}" title="刪除">×</div>
+    `;
+    
+    list.appendChild(row);
+  });
+  
+  // 綁定編輯事件
+  list.querySelectorAll('input[data-field]').forEach(input => {
+    input.addEventListener('change', handleEdit);
+    input.addEventListener('blur', handleEdit);
+    if (input.type === 'number') {
+      input.addEventListener('input', handleEdit);
+    }
+  });
+  
+  // 刪除
+  list.querySelectorAll('.stop-delete').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const idx = Number(e.target.dataset.idx);
+      if (confirm('刪除這個 stop？')) {
+        state.days[currentDay].stops.splice(idx, 1);
+        saveState();
+        render();
+      }
+    });
+  });
+  
+  // 拖拉排序
+  setupDragAndDrop(list);
+}
+
+function handleEdit(e) {
+  const idx = Number(e.target.dataset.idx);
+  const field = e.target.dataset.field;
+  const stops = state.days[currentDay].stops;
+  
+  if (field === 'name' || field === 'note') {
+    stops[idx][field] = e.target.value;
+  } else if (field === 'stay' || field === 'travel') {
+    const val = Math.max(0, Number(e.target.value) || 0);
+    stops[idx][field] = val;
+    // 即時更新時間（不重 render，只更新計算的時間欄位）
+    const computed = computeSchedule(currentDay);
+    document.querySelectorAll('.stop-row').forEach((row, i) => {
+      const startEl = row.querySelector('.stop-time.start');
+      const endEl = row.querySelector('.stop-time.end');
+      if (startEl) startEl.textContent = computed[i].startTime;
+      if (endEl) endEl.textContent = computed[i].endTime;
+    });
+    // 更新 day stats
+    updateDayStats();
+    // 更新 tabs
+    renderDayTabs();
+  }
+  saveState();
+}
+
+function updateDayStats() {
+  const stats = getDayStats(currentDay);
+  const statsEl = document.querySelector('.day-header .stats');
+  if (statsEl) {
+    statsEl.innerHTML = `
+      <span>停留 <span class="stat-val">${formatDuration(stats.totalStay)}</span></span>
+      <span>移動 <span class="stat-val">${formatDuration(stats.totalTravel)}</span></span>
+      <span>結束 <span class="stat-val">${stats.endTime}</span></span>
+    `;
+  }
+}
+
+function addStop() {
+  state.days[currentDay].stops.push({
+    name: '新地點',
+    icon: '📍',
+    type: '景點',
+    stay: 30,
+    travel: 10
+  });
+  saveState();
+  render();
+}
+
+// === DRAG AND DROP ===
+let draggedIdx = null;
+
+function setupDragAndDrop(list) {
+  list.querySelectorAll('.stop-row').forEach(row => {
+    row.addEventListener('dragstart', e => {
+      draggedIdx = Number(row.dataset.idx);
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      list.querySelectorAll('.stop-row').forEach(r => {
+        r.classList.remove('drag-over-top', 'drag-over-bottom');
+      });
+    });
+    
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const rect = row.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      list.querySelectorAll('.stop-row').forEach(r => {
+        r.classList.remove('drag-over-top', 'drag-over-bottom');
+      });
+      if (e.clientY < midY) {
+        row.classList.add('drag-over-top');
+      } else {
+        row.classList.add('drag-over-bottom');
+      }
+    });
+    
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      const targetIdx = Number(row.dataset.idx);
+      if (draggedIdx === null || draggedIdx === targetIdx) return;
+      
+      const rect = row.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      let insertIdx = e.clientY < midY ? targetIdx : targetIdx + 1;
+      
+      const stops = state.days[currentDay].stops;
+      const [moved] = stops.splice(draggedIdx, 1);
+      // 修正 idx 因為 splice 已經改變陣列
+      if (draggedIdx < insertIdx) insertIdx--;
+      stops.splice(insertIdx, 0, moved);
+      
+      draggedIdx = null;
+      saveState();
+      render();
+    });
+  });
+}
+
+// === EXPORT / IMPORT ===
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `kyoto-itinerary-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('importBtn').addEventListener('click', () => {
+  document.getElementById('importFile').click();
+});
+
+document.getElementById('importFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      if (imported.days && imported.startTimes) {
+        state = imported;
+        saveState();
+        render();
+        alert('匯入成功！');
+      } else {
+        alert('檔案格式錯誤');
+      }
+    } catch (err) {
+      alert('檔案無法解析: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (confirm('重置為預設行程？目前的修改會消失')) {
+    state = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    saveState();
+    render();
+  }
+});
+
+// HELP toggle
+document.getElementById('helpToggle').addEventListener('click', () => {
+  const panel = document.getElementById('helpPanel');
+  const toggle = document.getElementById('helpToggle');
+  panel.classList.toggle('show');
+  toggle.classList.toggle('hidden');
+});
+document.getElementById('helpPanel').addEventListener('click', () => {
+  document.getElementById('helpPanel').classList.remove('show');
+  document.getElementById('helpToggle').classList.remove('hidden');
+});
+
+// utils
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function render() {
+  renderDayTabs();
+  renderDay();
+}
+
+render();
+</script>
+</body>
+</html>
